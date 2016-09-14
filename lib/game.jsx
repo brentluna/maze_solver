@@ -31,13 +31,12 @@ class Game extends React.Component {
         <Maze />
         <Modal
           isOpen={this.state.modalIsOpen}
-          onAfterOpen={this.afterOpenModal}
           onRequestClose={this.closeModal}
           style={customStyles} >
 
-          <h2 ref="subtitle">Directions</h2>
-          <button onClick={this.closeModal}>close</button>
+          <h2 className='modal-title'>Solve My Maze</h2>
           <div>Make maze walls by clicking cells, solve when ready</div>
+          <button className='modal-button' onClick={this.closeModal}>close</button>
 
         </Modal>
       </div>

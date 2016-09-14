@@ -58,9 +58,14 @@
 	
 	var _game2 = _interopRequireDefault(_game);
 	
+	var _reactModal = __webpack_require__(175);
+	
+	var _reactModal2 = _interopRequireDefault(_reactModal);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	document.addEventListener('DOMContentLoaded', function () {
+	  _reactModal2.default.setAppElement(document.body);
 	  var rootEl = document.getElementById('root');
 	
 	  _reactDom2.default.render(_react2.default.createElement(_game2.default, null), rootEl);
@@ -21479,6 +21484,8 @@
 	    _this.handleClick = _this.handleClick.bind(_this);
 	    _this.unsolved = true;
 	    _this.solve = _this.solve.bind(_this);
+	    _this.dfs = _this.dfs.bind(_this);
+	    _this.solveDfs = _this.solveDfs.bind(_this);
 	    _this.reset = _this.reset.bind(_this);
 	    _this.path = {};
 	    _this.state = { unsolved: true, maze: _this.blankMaze() };
@@ -21624,6 +21631,54 @@
 	      }, 100);
 	    }
 	  }, {
+	    key: 'dfs',
+	    value: function dfs(e) {
+	      var start = arguments.length <= 1 || arguments[1] === undefined ? [0, 0] : arguments[1];
+	
+	
+	      var that = this;
+	      if (that.dfsCheckPos(start)) {
+	        return start;
+	      }
+	      var children = that.findChildren(start);
+	      children.forEach(function (child) {
+	        var result = that.dfs(1, child);
+	        if (result) {
+	          that.findShortestPath();
+	          return result;
+	        }
+	      });
+	      return false;
+	    }
+	  }, {
+	    key: 'solveDfs',
+	    value: function solveDfs(e) {
+	      var _this5 = this;
+	
+	      e.preventDefault();
+	      return function () {
+	
+	        _this5.dfs([0, 0]);
+	      };
+	    }
+	  }, {
+	    key: 'dfsCheckPos',
+	    value: function dfsCheckPos(pos) {
+	      console.log(pos);
+	      var newMaze = this.state.maze;
+	      var posValue = newMaze[pos[0]][pos[1]];
+	      if (posValue === 'finish') {
+	        this.unsolved = false;
+	        this.setState({ unsolved: false });
+	        this.setState({ maze: newMaze });
+	        return true;
+	      } else if (posValue !== 'start') {
+	        newMaze[pos[0]][pos[1]] = 'checking';
+	        this.setState({ maze: newMaze });
+	      }
+	      return false;
+	    }
+	  }, {
 	    key: 'reset',
 	    value: function reset(e) {
 	      e.preventDefault();
@@ -21657,14 +21712,23 @@
 	          this.mapGrid()
 	        ),
 	        _react2.default.createElement(
-	          'button',
-	          { onClick: this.solve },
-	          'Solve'
-	        ),
-	        _react2.default.createElement(
-	          'button',
-	          { onClick: this.reset },
-	          'Reset'
+	          'div',
+	          { className: 'button-div' },
+	          _react2.default.createElement(
+	            'button',
+	            { className: 'button', onClick: this.solve },
+	            'Solve BFS'
+	          ),
+	          _react2.default.createElement(
+	            'button',
+	            { className: 'button', onClick: this.dfs },
+	            'Solve DFS'
+	          ),
+	          _react2.default.createElement(
+	            'button',
+	            { className: 'button', onClick: this.reset },
+	            'Reset'
+	          )
 	        )
 	      );
 	    }
@@ -21799,23 +21863,22 @@
 	          _reactModal2.default,
 	          {
 	            isOpen: this.state.modalIsOpen,
-	            onAfterOpen: this.afterOpenModal,
 	            onRequestClose: this.closeModal,
 	            style: customStyles },
 	          _react2.default.createElement(
 	            'h2',
-	            { ref: 'subtitle' },
-	            'Directions'
-	          ),
-	          _react2.default.createElement(
-	            'button',
-	            { onClick: this.closeModal },
-	            'close'
+	            { className: 'modal-title' },
+	            'Solve My Maze'
 	          ),
 	          _react2.default.createElement(
 	            'div',
 	            null,
 	            'Make maze walls by clicking cells, solve when ready'
+	          ),
+	          _react2.default.createElement(
+	            'button',
+	            { className: 'modal-button', onClick: this.closeModal },
+	            'close'
 	          )
 	        )
 	      );

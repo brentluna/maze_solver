@@ -8,6 +8,8 @@ class Maze extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.unsolved = true;
     this.solve = this.solve.bind(this);
+    this.dfs = this.dfs.bind(this);
+    this.solveDfs = this.solveDfs.bind(this);
     this.reset = this.reset.bind(this);
     this.path = {};
     this.state = { unsolved: true, maze: this.blankMaze()};
@@ -143,6 +145,50 @@ class Maze extends React.Component {
     }, 100);
   }
 
+
+  dfs(e, start = [0, 0]) {
+
+    const that = this;
+    if (that.dfsCheckPos(start)) {
+      return start;
+    }
+    let children = that.findChildren(start);
+    children.forEach(child => {
+      let result = that.dfs(1,child);
+      if (result) {
+        that.findShortestPath();
+        return result;
+      }
+    });
+    return false;
+  }
+
+  solveDfs(e) {
+    e.preventDefault();
+    return () => {
+
+      this.dfs([0, 0]);
+    }
+  }
+
+  dfsCheckPos(pos) {
+    console.log(pos);
+    let newMaze = this.state.maze;
+    let posValue = newMaze[pos[0]][pos[1]];
+    if (posValue === 'finish') {
+      this.unsolved = false;
+      this.setState({unsolved: false});
+      this.setState({maze: newMaze});
+      return true;
+
+    } else if (posValue !== 'start') {
+      newMaze[pos[0]][pos[1]] = 'checking';
+      this.setState({maze: newMaze});
+    }
+    return false;
+
+  }
+
   reset(e) {
     e.preventDefault();
     this.unsolved = true;
@@ -169,8 +215,11 @@ class Maze extends React.Component {
         <ul className='grid-ul'>
           {this.mapGrid()}
         </ul>
-        <button onClick={this.solve} >Solve</button>
-        <button onClick={this.reset}>Reset</button>
+        <div className='button-div'>
+          <button className='button' onClick={this.solve} >Solve BFS</button>
+          <button className='button'onClick={this.dfs} >Solve DFS</button>
+          <button className='button' onClick={this.reset}>Reset</button>
+        </div>
       </div>
     );
   }
