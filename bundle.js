@@ -21505,13 +21505,12 @@
 	      var _this2 = this;
 	
 	      var shortestPath = [this.path['9,9']];
-	      while (shortestPath.slice(-1)[0][0] !== 0 && shortestPath.slice(-1)[0][1] !== [0, 0]) {
+	      while (shortestPath.slice(-1)[0][0] !== 0 || shortestPath.slice(-1)[0][1] !== 0) {
 	        var endEl = shortestPath.slice(-1)[0];
-	        console.log(endEl);
 	        var elKey = endEl.join();
 	        shortestPath.push(this.path[elKey]);
 	      }
-	      console.log(shortestPath);
+	
 	      shortestPath.forEach(function (coords) {
 	        var newMaze = _this2.state.maze;
 	        newMaze[coords[0]][coords[1]] = 'shortest';
@@ -21585,13 +21584,10 @@
 	    value: function checkPos(pos) {
 	      var newMaze = this.state.maze;
 	      var posValue = newMaze[pos[0]][pos[1]];
-	      console.log(posValue);
+	
 	      if (posValue === 'finish') {
 	        this.unsolved = false;
 	        this.setState({ unsolved: false });
-	
-	        console.log(this.path);
-	        console.log('solved');
 	      } else if (posValue !== 'start') {
 	        newMaze[pos[0]][pos[1]] = 'checking';
 	      }
@@ -21617,7 +21613,7 @@
 	          console.log('outside');
 	          _this4.findShortestPath();
 	        }
-	      }, 50);
+	      }, 20);
 	    }
 	  }, {
 	    key: 'reset',
@@ -21708,7 +21704,15 @@
 	    key: 'render',
 	    value: function render() {
 	      var cName = 'node ' + this.props.type;
-	      return _react2.default.createElement('li', { className: cName, onClick: this.props.handleClick });
+	      var content = '';
+	      if (this.props.type === 'shortest') {
+	        content = '+';
+	      }
+	      return _react2.default.createElement(
+	        'li',
+	        { className: cName, onClick: this.props.handleClick },
+	        content
+	      );
 	    }
 	  }]);
 	

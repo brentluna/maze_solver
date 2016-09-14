@@ -28,18 +28,18 @@ class Maze extends React.Component {
 
   findShortestPath() {
     const shortestPath = [this.path['9,9']];
-    while (shortestPath.slice(-1)[0][0] !== 0 && shortestPath.slice(-1)[0][1] !== [0, 0]) {
+    while ((shortestPath.slice(-1)[0][0] !== 0) || (shortestPath.slice(-1)[0][1] !== 0)) {
       let endEl = shortestPath.slice(-1)[0];
-      console.log(endEl);
       let elKey = endEl.join();
       shortestPath.push(this.path[elKey]);
     }
-    console.log(shortestPath);
+
     shortestPath.forEach(coords => {
       let newMaze = this.state.maze;
       newMaze[coords[0]][coords[1]] = 'shortest';
       this.setState({maze: newMaze});
     });
+
   }
 
 
@@ -104,13 +104,11 @@ class Maze extends React.Component {
   checkPos(pos) {
     let newMaze = this.state.maze;
     let posValue = newMaze[pos[0]][pos[1]];
-    console.log(posValue);
+
     if (posValue === 'finish') {
       this.unsolved = false;
       this.setState({unsolved: false});
 
-      console.log(this.path);
-      console.log('solved');
     } else if (posValue !== 'start') {
       newMaze[pos[0]][pos[1]] = 'checking';
 
@@ -134,7 +132,7 @@ class Maze extends React.Component {
         console.log('outside');
         this.findShortestPath();
       }
-    }, 50);
+    }, 20);
   }
 
   reset(e) {
