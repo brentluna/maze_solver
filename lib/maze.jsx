@@ -33,12 +33,20 @@ class Maze extends React.Component {
       let elKey = endEl.join();
       shortestPath.push(this.path[elKey]);
     }
+    let idx = 0;
+    let pathInterval = setInterval(() => {
 
-    shortestPath.forEach(coords => {
-      let newMaze = this.state.maze;
-      newMaze[coords[0]][coords[1]] = 'shortest';
-      this.setState({maze: newMaze});
-    });
+      if (idx < shortestPath.length) {
+        let newMaze = this.state.maze;
+        let coords = shortestPath[idx];
+        newMaze[coords[0]][coords[1]] = 'shortest';
+        this.setState({maze: newMaze});
+        idx++;
+      } else {
+
+        clearInterval(pathInterval);
+      }
+    }, 50);
 
   }
 
@@ -132,7 +140,7 @@ class Maze extends React.Component {
         console.log('outside');
         this.findShortestPath();
       }
-    }, 20);
+    }, 100);
   }
 
   reset(e) {

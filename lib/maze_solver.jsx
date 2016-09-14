@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Maze from './maze';
+import Game from './game';
 
 document.addEventListener('DOMContentLoaded', () => {
   const rootEl = document.getElementById('root');
 
-  ReactDOM.render(<Maze />, rootEl);
+  ReactDOM.render(<Game />, rootEl);
 });
