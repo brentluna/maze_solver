@@ -21572,16 +21572,20 @@
 	
 	      deltas.forEach(function (delta) {
 	        var newPos = [x + delta, y];
+	        var newPos2 = [x, y + delta];
 	        if (_this3.isValidPos(newPos)) {
 	          children.push(newPos);
 	        }
-	      });
-	      deltas.forEach(function (delta) {
-	        var newPos = [x, y + delta];
-	        if (_this3.isValidPos(newPos)) {
-	          children.push(newPos);
+	        if (_this3.isValidPos(newPos2)) {
+	          children.push(newPos2);
 	        }
 	      });
+	      // deltas.forEach(delta => {
+	      //   let newPos = [x, (y + delta)];
+	      //   if (this.isValidPos(newPos)) {
+	      //     children.push(newPos);
+	      //   }
+	      // });
 	      children.forEach(function (child) {
 	        _this3.path[child.join()] = pos;
 	        _this3.markAsChild(child);
@@ -21759,7 +21763,7 @@
 	          _react2.default.createElement(
 	            'button',
 	            { className: 'button', onClick: this.dfs },
-	            'Solve DFS'
+	            'Solve ZZS'
 	          ),
 	          _react2.default.createElement(
 	            'button',
@@ -21919,7 +21923,7 @@
 	            _react2.default.createElement(
 	              'div',
 	              null,
-	              'Make maze walls by dragging mouse across cells. Choose wich algorithm you wish to solve it, Breadth First Search or Depth First Search'
+	              'Make maze walls by dragging mouse across cells. Choose wich algorithm you wish to solve it, an iterative Breadth First Search or recursive Zig Zag Search'
 	            ),
 	            _react2.default.createElement(
 	              'button',
