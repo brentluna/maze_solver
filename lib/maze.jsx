@@ -244,6 +244,7 @@ class Maze extends React.Component {
         <ul className='grid-ul' onMouseDown={this.mUp} onMouseUp={this.mDown}>
           {this.mapGrid()}
         </ul>
+        <input type='range' name='speed' min='10' max='5000'/>
         <div className='button-div'>
           <button className='button' onClick={this.solve} >Solve BFS</button>
           <button className='button'onClick={this.dfs} >Solve DFS</button>

@@ -21746,6 +21746,7 @@
 	          { className: 'grid-ul', onMouseDown: this.mUp, onMouseUp: this.mDown },
 	          this.mapGrid()
 	        ),
+	        _react2.default.createElement('input', { type: 'range', name: 'speed', min: '10', max: '5000' }),
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'button-div' },

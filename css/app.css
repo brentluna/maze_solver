@@ -61,11 +61,11 @@ li {
 }
 
 .path {
-  background: #9b26af;
+  background: #6DD3CE;
 }
 
 .wall {
-  background: #68efad;
+  background: #351E29;
 }
 
 .grid-ul {
@@ -77,28 +77,28 @@ li {
 }
 
 .start {
-  background: #4DB6AC;
+  background: #F7A278;
 }
 
 .finish {
-  background: #512DA8;
+  background: #F7A278;
 }
 
 .checking {
-  background: #EC407A;
+  background: #C8E9A0;
   transition: background 1s;
 }
 
 .child {
-  background: #9b26af;
+  background: #C8E9A0;
 }
 
 .shortest {
-  background: #B39DDB;
+  background: #A13D63;
 }
 
 .button {
-  background: #68efad;
+  background: #F7A278;
   width: 180px;
   margin: 20px;
   font-size: 18px;
@@ -109,6 +109,8 @@ h1 {
   margin: 40px auto;
   text-align: center;
   font-size: 38px;
+  color: #A13D63;
+  font-weight: 600;
 }
 
 .button-div {

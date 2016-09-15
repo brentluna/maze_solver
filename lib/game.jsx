@@ -39,6 +39,7 @@ class Game extends React.Component {
           <button className='modal-button' onClick={this.closeModal}>close</button>
 
         </Modal>
+
       </div>
     );
   }
