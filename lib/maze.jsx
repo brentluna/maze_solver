@@ -253,7 +253,7 @@ class Maze extends React.Component {
         </ul>
         <div className='button-div'>
           <button className='button' onClick={this.solve} >Solve BFS</button>
-          <button className='button'onClick={this.dfs} >Solve ZZS</button>
+          <button className='button'onClick={this.dfs} >Solve BFS</button>
           <button className='button' onClick={this.reset}>Reset</button>
         </div>
       </div>

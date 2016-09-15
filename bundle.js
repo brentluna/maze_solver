@@ -21763,7 +21763,7 @@
 	          _react2.default.createElement(
 	            'button',
 	            { className: 'button', onClick: this.dfs },
-	            'Solve ZZS'
+	            'Solve BFS'
 	          ),
 	          _react2.default.createElement(
 	            'button',
@@ -21923,7 +21923,7 @@
 	            _react2.default.createElement(
 	              'div',
 	              null,
-	              'Make maze walls by dragging mouse across cells. Choose wich algorithm you wish to solve it, an iterative Breadth First Search or recursive Zig Zag Search'
+	              'Make maze walls by dragging mouse across cells. Choose wich algorithm you wish to solve it, an iterative Breadth First Search or recursive Depth First Search'
 	            ),
 	            _react2.default.createElement(
 	              'button',

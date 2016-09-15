@@ -40,7 +40,7 @@ class Game extends React.Component {
             style={customStyles} >
 
             <h2 className='modal-title'>Solve My Maze</h2>
-            <div>Make maze walls by dragging mouse across cells. Choose wich algorithm you wish to solve it, an iterative Breadth First Search or recursive Zig Zag Search</div>
+            <div>Make maze walls by dragging mouse across cells. Choose wich algorithm you wish to solve it, an iterative Breadth First Search or recursive Depth First Search</div>
             <button className='modal-button' onClick={this.closeModal}>close</button>
 
           </Modal>
