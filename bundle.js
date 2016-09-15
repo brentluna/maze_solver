@@ -21489,7 +21489,7 @@
 	    _this.solveDfs = _this.solveDfs.bind(_this);
 	    _this.reset = _this.reset.bind(_this);
 	    _this.path = {};
-	    _this.state = { unsolved: true, maze: _this.blankMaze(), mouseDown: false };
+	    _this.state = { unsolved: true, maze: _this.blankMaze(), mouseDown: false, solving: false };
 	    _this.mUp = _this.mUp.bind(_this);
 	    _this.mDown = _this.mDown.bind(_this);
 	    return _this;
@@ -21532,13 +21532,14 @@
 	        } else {
 	
 	          clearInterval(pathInterval);
+	          _this2.setState({ solving: false });
 	        }
 	      }, 50);
 	    }
 	  }, {
 	    key: 'handleClick',
 	    value: function handleClick(coords, e) {
-	      if (this.state.mouseDown && this.state.maze[coords[0]][coords[1]] === 'path') {
+	      if (!this.state.solving && this.state.mouseDown && this.state.maze[coords[0]][coords[1]] === 'path') {
 	        var newMaze = this.state.maze;
 	        newMaze[coords[0]][coords[1]] = 'wall';
 	        this.setState({ maze: newMaze });
@@ -21622,20 +21623,25 @@
 	      var _this4 = this;
 	
 	      e.preventDefault();
-	      var queue = [[0, 0]];
+	      if (!this.state.solving) {
+	        (function () {
+	          _this4.setState({ solving: true });
+	          var queue = [[0, 0]];
 	
-	      var solveInterval = setInterval(function () {
-	        if (_this4.unsolved && queue.length) {
-	          var parent = queue.shift();
-	          var newChildren = _this4.findChildren(parent);
-	          queue.push.apply(queue, _toConsumableArray(newChildren));
-	          _this4.checkPos(parent);
-	        } else {
-	          clearInterval(solveInterval);
-	          console.log('outside');
-	          _this4.findShortestPath();
-	        }
-	      }, 30);
+	          var solveInterval = setInterval(function () {
+	            if (_this4.unsolved && queue.length) {
+	              var parent = queue.shift();
+	              var newChildren = _this4.findChildren(parent);
+	              queue.push.apply(queue, _toConsumableArray(newChildren));
+	              _this4.checkPos(parent);
+	            } else {
+	              clearInterval(solveInterval);
+	              console.log('outside');
+	              _this4.findShortestPath();
+	            }
+	          }, 30);
+	        })();
+	      }
 	    }
 	  }, {
 	    key: 'dfs',
@@ -21667,10 +21673,13 @@
 	      var _this5 = this;
 	
 	      e.preventDefault();
-	      return function () {
-	        console.log('dfs');
-	        _this5.dfs([0, 0]);
-	      };
+	      if (!this.state.solving) {
+	        this.setState({ solving: true });
+	        return function () {
+	          console.log('dfs');
+	          _this5.dfs([0, 0]);
+	        };
+	      }
 	    }
 	  }, {
 	    key: 'traceDFS',
@@ -21712,10 +21721,12 @@
 	    key: 'reset',
 	    value: function reset(e) {
 	      e.preventDefault();
-	      this.unsolved = true;
-	      this.path = {};
-	      this.dfsPath = [];
-	      this.setState({ maze: this.blankMaze(), unsolved: true });
+	      if (!this.state.solving) {
+	        this.unsolved = true;
+	        this.path = {};
+	        this.dfsPath = [];
+	        this.setState({ maze: this.blankMaze(), unsolved: true });
+	      }
 	    }
 	  }, {
 	    key: 'mapGrid',
@@ -21763,7 +21774,7 @@
 	          _react2.default.createElement(
 	            'button',
 	            { className: 'button', onClick: this.dfs },
-	            'Solve BFS'
+	            'Solve DFS'
 	          ),
 	          _react2.default.createElement(
 	            'button',

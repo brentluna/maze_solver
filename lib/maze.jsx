@@ -13,7 +13,7 @@ class Maze extends React.Component {
     this.solveDfs = this.solveDfs.bind(this);
     this.reset = this.reset.bind(this);
     this.path = {};
-    this.state = { unsolved: true, maze: this.blankMaze(), mouseDown: false};
+    this.state = { unsolved: true, maze: this.blankMaze(), mouseDown: false, solving: false};
     this.mUp = this.mUp.bind(this);
     this.mDown = this.mDown.bind(this);
   }
@@ -50,6 +50,7 @@ class Maze extends React.Component {
       } else {
 
         clearInterval(pathInterval);
+        this.setState({solving: false});
       }
     }, 50);
 
@@ -57,7 +58,7 @@ class Maze extends React.Component {
 
 
   handleClick(coords, e) {
-    if (this.state.mouseDown && this.state.maze[coords[0]][coords[1]] === 'path') {
+    if (!this.state.solving && this.state.mouseDown &&  this.state.maze[coords[0]][coords[1]] === 'path') {
       let newMaze = this.state.maze;
       newMaze[coords[0]][coords[1]] = 'wall';
       this.setState({maze: newMaze});
@@ -136,20 +137,23 @@ class Maze extends React.Component {
 
   solve(e) {
     e.preventDefault();
-    let queue = [[0, 0]];
+    if (!this.state.solving) {
+      this.setState({solving: true});
+      let queue = [[0, 0]];
 
-    let solveInterval = setInterval(() => {
-      if (this.unsolved && queue.length) {
-        let parent = queue.shift();
-        let newChildren = this.findChildren(parent);
-        queue.push(...newChildren);
-        this.checkPos(parent);
-      } else {
-        clearInterval(solveInterval);
-        console.log('outside');
-        this.findShortestPath();
-      }
-    }, 30);
+      let solveInterval = setInterval(() => {
+        if (this.unsolved && queue.length) {
+          let parent = queue.shift();
+          let newChildren = this.findChildren(parent);
+          queue.push(...newChildren);
+          this.checkPos(parent);
+        } else {
+          clearInterval(solveInterval);
+          console.log('outside');
+          this.findShortestPath();
+        }
+      }, 30);
+    }
   }
 
 
@@ -177,10 +181,13 @@ class Maze extends React.Component {
 
   solveDfs(e) {
     e.preventDefault();
-    return () => {
-      console.log('dfs');
-      this.dfs([0, 0]);
-    };
+    if (!this.state.solving) {
+      this.setState({solving: true});
+      return () => {
+        console.log('dfs');
+        this.dfs([0, 0]);
+      };
+    }
   }
 
   traceDFS() {
@@ -219,10 +226,12 @@ class Maze extends React.Component {
 
   reset(e) {
     e.preventDefault();
-    this.unsolved = true;
-    this.path = {};
-    this.dfsPath = [];
-    this.setState({maze: this.blankMaze(), unsolved: true});
+    if (!this.state.solving) {
+      this.unsolved = true;
+      this.path = {};
+      this.dfsPath = [];
+      this.setState({maze: this.blankMaze(), unsolved: true});
+    }
   }
 
   mapGrid() {
@@ -253,7 +262,7 @@ class Maze extends React.Component {
         </ul>
         <div className='button-div'>
           <button className='button' onClick={this.solve} >Solve BFS</button>
-          <button className='button'onClick={this.dfs} >Solve BFS</button>
+          <button className='button'onClick={this.dfs} >Solve DFS</button>
           <button className='button' onClick={this.reset}>Reset</button>
         </div>
       </div>
