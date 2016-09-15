@@ -13,7 +13,9 @@ const customStyles = {
     marginRight           : '-50%',
     transform             : 'translate(-50%, -50%)',
     width : '600px',
-    background: '#F7A278'
+    background: '#F7A278',
+    lineHeight: '2',
+    fontSize: '20px'
   }
 };
 
@@ -46,7 +48,7 @@ class Game extends React.Component {
           </Modal>
           <footer className='footer'>
             <div>Made by Brent Luna</div>
-            <div><a className='github-icon' target='_blank' href='https://github.com/brentluna/SimplyTech'>
+            <div><a className='github-icon' target='_blank' href='https://github.com/brentluna/maze_solver'>
               <GitHub />
             </a></div>
           </footer>

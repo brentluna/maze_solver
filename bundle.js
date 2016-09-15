@@ -21883,7 +21883,9 @@
 	    marginRight: '-50%',
 	    transform: 'translate(-50%, -50%)',
 	    width: '600px',
-	    background: '#F7A278'
+	    background: '#F7A278',
+	    lineHeight: '2',
+	    fontSize: '20px'
 	  }
 	};
 	
@@ -21955,7 +21957,7 @@
 	              null,
 	              _react2.default.createElement(
 	                'a',
-	                { className: 'github-icon', target: '_blank', href: 'https://github.com/brentluna/SimplyTech' },
+	                { className: 'github-icon', target: '_blank', href: 'https://github.com/brentluna/maze_solver' },
 	                _react2.default.createElement(_github2.default, null)
 	              )
 	            )

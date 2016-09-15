@@ -114,6 +114,7 @@ h1 {
   font-size: 38px;
   color: #A13D63;
   font-weight: 600;
+  font-family: 'Bungee Shade'
 }
 
 .button-div {
@@ -122,15 +123,18 @@ h1 {
 }
 
 .modal-title {
-  font-size: 24px;
+  font-size: 36px;
   text-align: center;
 padding: 20px;
+font-family: 'Bungee Shade';
+color: black;
 }
 
 .modal-button {
   background: #68efad;
   width: 80px;
   margin: 20px auto;
+  font-size: 16px;
 }
 
 .footer {
@@ -145,6 +149,8 @@ border-top: 1px solid;
 
 .footer div {
   padding: 20px;
+  font-family: 'Bungee Shade';
+  color: #A13D63;
 }
 
 .main {
@@ -157,4 +163,8 @@ border-top: 1px solid;
 
 .github-icon {
   font-size: 24px;
+}
+
+h2 {
+
 }
