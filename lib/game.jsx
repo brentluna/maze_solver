@@ -35,7 +35,7 @@ class Game extends React.Component {
           style={customStyles} >
 
           <h2 className='modal-title'>Solve My Maze</h2>
-          <div>Make maze walls by clicking cells, solve when ready</div>
+          <div>Make maze walls by dragging mouse across cells. Choose wich algorithm you wish to solve it, Breadth First Search or Depth First Search</div>
           <button className='modal-button' onClick={this.closeModal}>close</button>
 
         </Modal>

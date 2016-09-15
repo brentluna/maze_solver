@@ -21909,7 +21909,7 @@
 	          _react2.default.createElement(
 	            'div',
 	            null,
-	            'Make maze walls by clicking cells, solve when ready'
+	            'Make maze walls by dragging mouse across cells. Choose wich algorithm you wish to solve it, Breadth First Search or Depth First Search'
 	          ),
 	          _react2.default.createElement(
 	            'button',
