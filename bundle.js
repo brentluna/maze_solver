@@ -21485,6 +21485,7 @@
 	    _this.unsolved = true;
 	    _this.solve = _this.solve.bind(_this);
 	    _this.dfs = _this.dfs.bind(_this);
+	    _this.dfsPath = [];
 	    _this.solveDfs = _this.solveDfs.bind(_this);
 	    _this.reset = _this.reset.bind(_this);
 	    _this.path = {};
@@ -21644,7 +21645,8 @@
 	      children.forEach(function (child) {
 	        var result = that.dfs(1, child);
 	        if (result) {
-	          that.findShortestPath();
+	          // that.findShortestPath();
+	          that.traceDFS();
 	          return result;
 	        }
 	      });
@@ -21662,19 +21664,37 @@
 	      };
 	    }
 	  }, {
+	    key: 'traceDFS',
+	    value: function traceDFS() {
+	      var _this6 = this;
+	
+	      console.log(this.dfsPath);
+	      var idx = 0;
+	      var dfsInterval = setInterval(function () {
+	        if (idx < _this6.dfsPath.length) {
+	          var pos = _this6.dfsPath[idx];
+	          var newMaze = _this6.state.maze;
+	          newMaze[pos[0]][pos[1]] = 'checking';
+	          _this6.setState({ maze: newMaze });
+	          idx++;
+	        } else {
+	          clearInterval(dfsInterval);
+	          _this6.findShortestPath();
+	        }
+	      }, 100);
+	    }
+	  }, {
 	    key: 'dfsCheckPos',
 	    value: function dfsCheckPos(pos) {
-	      console.log(pos);
-	      var newMaze = this.state.maze;
-	      var posValue = newMaze[pos[0]][pos[1]];
+	
+	      var posValue = this.state.maze[pos[0]][pos[1]];
 	      if (posValue === 'finish') {
 	        this.unsolved = false;
 	        this.setState({ unsolved: false });
-	        this.setState({ maze: newMaze });
+	        // this.dfsPath.push(pos);
 	        return true;
 	      } else if (posValue !== 'start') {
-	        newMaze[pos[0]][pos[1]] = 'checking';
-	        this.setState({ maze: newMaze });
+	        this.dfsPath.push(pos);
 	      }
 	      return false;
 	    }
@@ -21684,6 +21704,7 @@
 	      e.preventDefault();
 	      this.unsolved = true;
 	      this.path = {};
+	      this.dfsPath = [];
 	      this.setState({ maze: this.blankMaze(), unsolved: true });
 	    }
 	  }, {

@@ -61,11 +61,11 @@ li {
 }
 
 .path {
-  background: teal;
+  background: #9b26af;
 }
 
 .wall {
-  background: pink;
+  background: #68efad;
 }
 
 .grid-ul {
@@ -76,28 +76,28 @@ li {
 }
 
 .start {
-  background: green;
+  background: #4DB6AC;
 }
 
 .finish {
-  background: red;
+  background: #512DA8;
 }
 
 .checking {
-  background: orange;
+  background: #EC407A;
   transition: background 1s;
 }
 
 .child {
-  background: yellow;
+  background: #9b26af;
 }
 
 .shortest {
-  background: lightblue;
+  background: #B39DDB;
 }
 
 .button {
-  background: teal;
+  background: #68efad;
   width: 180px;
   margin: 20px;
   font-size: 18px;
@@ -122,7 +122,7 @@ padding: 20px;
 }
 
 .modal-button {
-  background: teal;
+  background: #68efad;
   width: 80px;
   margin: 20px auto;
 }
