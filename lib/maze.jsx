@@ -145,51 +145,57 @@ class Maze extends React.Component {
         console.log('outside');
         this.findShortestPath();
       }
-    }, 100);
+    }, 30);
   }
 
 
   dfs(e, start = [0, 0]) {
 
     const that = this;
+    console.log(start);
     if (that.dfsCheckPos(start)) {
-      return start;
+      return true;
     }
     let children = that.findChildren(start);
+    console.log(children);
     children.forEach(child => {
       let result = that.dfs(1,child);
       if (result) {
-        // that.findShortestPath();
         that.traceDFS();
         return result;
+      } else {
+        return false;
       }
     });
     return false;
+
   }
 
   solveDfs(e) {
     e.preventDefault();
     return () => {
-
+      console.log('dfs');
       this.dfs([0, 0]);
     };
   }
 
   traceDFS() {
     console.log(this.dfsPath);
+
     let idx = 0;
+    const that = this;
     let dfsInterval = setInterval(() => {
       if (idx < this.dfsPath.length) {
-        let pos = this.dfsPath[idx];
-        let newMaze = this.state.maze;
+        let pos = that.dfsPath[idx];
+        let newMaze = that.state.maze;
         newMaze[pos[0]][pos[1]] = 'checking';
-        this.setState({maze: newMaze});
+        that.setState({maze: newMaze});
         idx++;
       } else {
         clearInterval(dfsInterval);
-        this.findShortestPath();
+        that.findShortestPath();
       }
-    }, 100);
+    }, 20);
   }
 
   dfsCheckPos(pos) {
@@ -198,7 +204,6 @@ class Maze extends React.Component {
     if (posValue === 'finish') {
       this.unsolved = false;
       this.setState({unsolved: false});
-      // this.dfsPath.push(pos);
       return true;
 
     } else if (posValue !== 'start') {
@@ -230,11 +235,9 @@ class Maze extends React.Component {
 
   mUp() {
     this.setState({mouseDown: true});
-    console.log(this.state.mouseDown);
   }
   mDown() {
     this.setState({mouseDown: false});
-    console.log(this.state.mouseDown);
   }
 
   render() {
@@ -244,7 +247,6 @@ class Maze extends React.Component {
         <ul className='grid-ul' onMouseDown={this.mUp} onMouseUp={this.mDown}>
           {this.mapGrid()}
         </ul>
-        <input type='range' name='speed' min='10' max='5000'/>
         <div className='button-div'>
           <button className='button' onClick={this.solve} >Solve BFS</button>
           <button className='button'onClick={this.dfs} >Solve DFS</button>

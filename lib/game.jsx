@@ -1,6 +1,8 @@
 import React from 'react';
 import Modal from 'react-modal';
 import Maze from './maze';
+import GitHub from 'react-icons/lib/fa/github';
+
 
 const customStyles = {
   content : {
@@ -9,7 +11,9 @@ const customStyles = {
     right                 : 'auto',
     bottom                : 'auto',
     marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
+    transform             : 'translate(-50%, -50%)',
+    width : '600px',
+    background: '#F7A278'
   }
 };
 
@@ -27,19 +31,26 @@ class Game extends React.Component {
   render() {
     return (
       <div>
-        <h1>Solve My Maze</h1>
-        <Maze />
-        <Modal
-          isOpen={this.state.modalIsOpen}
-          onRequestClose={this.closeModal}
-          style={customStyles} >
+        <div className='main'>
+          <h1>Solve My Maze</h1>
+          <Maze />
+          <Modal
+            isOpen={this.state.modalIsOpen}
+            onRequestClose={this.closeModal}
+            style={customStyles} >
 
-          <h2 className='modal-title'>Solve My Maze</h2>
-          <div>Make maze walls by dragging mouse across cells. Choose wich algorithm you wish to solve it, Breadth First Search or Depth First Search</div>
-          <button className='modal-button' onClick={this.closeModal}>close</button>
+            <h2 className='modal-title'>Solve My Maze</h2>
+            <div>Make maze walls by dragging mouse across cells. Choose wich algorithm you wish to solve it, Breadth First Search or Depth First Search</div>
+            <button className='modal-button' onClick={this.closeModal}>close</button>
 
-        </Modal>
-
+          </Modal>
+          <footer className='footer'>
+            <div>Made by Brent Luna</div>
+            <div><a className='github-icon' target='_blank' href='https://github.com/brentluna/SimplyTech'>
+              <GitHub />
+            </a></div>
+          </footer>
+        </div>
       </div>
     );
   }

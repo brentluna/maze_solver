@@ -21631,7 +21631,7 @@
 	          console.log('outside');
 	          _this4.findShortestPath();
 	        }
-	      }, 100);
+	      }, 30);
 	    }
 	  }, {
 	    key: 'dfs',
@@ -21640,16 +21640,19 @@
 	
 	
 	      var that = this;
+	      console.log(start);
 	      if (that.dfsCheckPos(start)) {
-	        return start;
+	        return true;
 	      }
 	      var children = that.findChildren(start);
+	      console.log(children);
 	      children.forEach(function (child) {
 	        var result = that.dfs(1, child);
 	        if (result) {
-	          // that.findShortestPath();
 	          that.traceDFS();
 	          return result;
+	        } else {
+	          return false;
 	        }
 	      });
 	      return false;
@@ -21661,7 +21664,7 @@
 	
 	      e.preventDefault();
 	      return function () {
-	
+	        console.log('dfs');
 	        _this5.dfs([0, 0]);
 	      };
 	    }
@@ -21671,19 +21674,21 @@
 	      var _this6 = this;
 	
 	      console.log(this.dfsPath);
+	
 	      var idx = 0;
+	      var that = this;
 	      var dfsInterval = setInterval(function () {
 	        if (idx < _this6.dfsPath.length) {
-	          var pos = _this6.dfsPath[idx];
-	          var newMaze = _this6.state.maze;
+	          var pos = that.dfsPath[idx];
+	          var newMaze = that.state.maze;
 	          newMaze[pos[0]][pos[1]] = 'checking';
-	          _this6.setState({ maze: newMaze });
+	          that.setState({ maze: newMaze });
 	          idx++;
 	        } else {
 	          clearInterval(dfsInterval);
-	          _this6.findShortestPath();
+	          that.findShortestPath();
 	        }
-	      }, 100);
+	      }, 20);
 	    }
 	  }, {
 	    key: 'dfsCheckPos',
@@ -21693,7 +21698,6 @@
 	      if (posValue === 'finish') {
 	        this.unsolved = false;
 	        this.setState({ unsolved: false });
-	        // this.dfsPath.push(pos);
 	        return true;
 	      } else if (posValue !== 'start') {
 	        this.dfsPath.push(pos);
@@ -21726,13 +21730,11 @@
 	    key: 'mUp',
 	    value: function mUp() {
 	      this.setState({ mouseDown: true });
-	      console.log(this.state.mouseDown);
 	    }
 	  }, {
 	    key: 'mDown',
 	    value: function mDown() {
 	      this.setState({ mouseDown: false });
-	      console.log(this.state.mouseDown);
 	    }
 	  }, {
 	    key: 'render',
@@ -21746,7 +21748,6 @@
 	          { className: 'grid-ul', onMouseDown: this.mUp, onMouseUp: this.mDown },
 	          this.mapGrid()
 	        ),
-	        _react2.default.createElement('input', { type: 'range', name: 'speed', min: '10', max: '5000' }),
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'button-div' },
@@ -21846,6 +21847,10 @@
 	
 	var _maze2 = _interopRequireDefault(_maze);
 	
+	var _github = __webpack_require__(195);
+	
+	var _github2 = _interopRequireDefault(_github);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -21861,7 +21866,9 @@
 	    right: 'auto',
 	    bottom: 'auto',
 	    marginRight: '-50%',
-	    transform: 'translate(-50%, -50%)'
+	    transform: 'translate(-50%, -50%)',
+	    width: '600px',
+	    background: '#F7A278'
 	  }
 	};
 	
@@ -21890,31 +21897,53 @@
 	        'div',
 	        null,
 	        _react2.default.createElement(
-	          'h1',
-	          null,
-	          'Solve My Maze'
-	        ),
-	        _react2.default.createElement(_maze2.default, null),
-	        _react2.default.createElement(
-	          _reactModal2.default,
-	          {
-	            isOpen: this.state.modalIsOpen,
-	            onRequestClose: this.closeModal,
-	            style: customStyles },
+	          'div',
+	          { className: 'main' },
 	          _react2.default.createElement(
-	            'h2',
-	            { className: 'modal-title' },
+	            'h1',
+	            null,
 	            'Solve My Maze'
 	          ),
+	          _react2.default.createElement(_maze2.default, null),
 	          _react2.default.createElement(
-	            'div',
-	            null,
-	            'Make maze walls by dragging mouse across cells. Choose wich algorithm you wish to solve it, Breadth First Search or Depth First Search'
+	            _reactModal2.default,
+	            {
+	              isOpen: this.state.modalIsOpen,
+	              onRequestClose: this.closeModal,
+	              style: customStyles },
+	            _react2.default.createElement(
+	              'h2',
+	              { className: 'modal-title' },
+	              'Solve My Maze'
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              null,
+	              'Make maze walls by dragging mouse across cells. Choose wich algorithm you wish to solve it, Breadth First Search or Depth First Search'
+	            ),
+	            _react2.default.createElement(
+	              'button',
+	              { className: 'modal-button', onClick: this.closeModal },
+	              'close'
+	            )
 	          ),
 	          _react2.default.createElement(
-	            'button',
-	            { className: 'modal-button', onClick: this.closeModal },
-	            'close'
+	            'footer',
+	            { className: 'footer' },
+	            _react2.default.createElement(
+	              'div',
+	              null,
+	              'Made by Brent Luna'
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              null,
+	              _react2.default.createElement(
+	                'a',
+	                { className: 'github-icon', target: '_blank', href: 'https://github.com/brentluna/SimplyTech' },
+	                _react2.default.createElement(_github2.default, null)
+	              )
+	            )
 	          )
 	        )
 	      );
@@ -23865,6 +23894,118 @@
 	  else this.add(className)
 	}
 
+
+/***/ },
+/* 195 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var React = __webpack_require__(1);
+	var IconBase = __webpack_require__(196);
+	
+	var FaGithub = function (_React$Component) {
+	    _inherits(FaGithub, _React$Component);
+	
+	    function FaGithub() {
+	        _classCallCheck(this, FaGithub);
+	
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(FaGithub).apply(this, arguments));
+	    }
+	
+	    _createClass(FaGithub, [{
+	        key: 'render',
+	        value: function render() {
+	            return React.createElement(
+	                IconBase,
+	                _extends({ viewBox: '0 0 40 40' }, this.props),
+	                React.createElement(
+	                    'g',
+	                    null,
+	                    React.createElement('path', { d: 'm20.1 2.9q4.7 0 8.6 2.3t6.3 6.2 2.3 8.6q0 5.6-3.3 10.1t-8.4 6.2q-0.6 0.1-0.9-0.2t-0.3-0.7q0 0 0-1.7t0-3q0-2.1-1.2-3.1 1.3-0.2 2.3-0.4t2.1-0.9 1.8-1.5 1.2-2.3 0.5-3.4q0-2.7-1.8-4.6 0.8-2-0.2-4.5-0.6-0.2-1.8 0.2t-2 1l-0.9 0.5q-2-0.6-4.3-0.6t-4.2 0.6q-0.4-0.2-1-0.6t-1.9-0.8-1.9-0.3q-1 2.5-0.1 4.5-1.8 1.9-1.8 4.6 0 1.9 0.5 3.4t1.1 2.3 1.8 1.5 2.1 0.9 2.3 0.4q-0.9 0.8-1.1 2.3-0.4 0.2-1 0.3t-1.3 0.1-1.4-0.5-1.3-1.4q-0.4-0.7-1-1.1t-1.1-0.6l-0.5 0q-0.5 0-0.6 0.1t-0.1 0.2 0.2 0.3 0.2 0.3l0.2 0.1q0.5 0.2 1 0.9t0.7 1.1l0.2 0.5q0.3 0.9 1 1.4t1.5 0.7 1.5 0.1 1.3-0.1l0.5 0q0 0.8 0 1.9t0 1.2q0 0.5-0.3 0.7t-0.9 0.2q-5.2-1.7-8.4-6.2t-3.3-10.1q0-4.7 2.3-8.6t6.2-6.2 8.6-2.3z m-10.6 24.6q0.1-0.2-0.2-0.3-0.2-0.1-0.2 0.1-0.1 0.1 0.1 0.2 0.2 0.2 0.3 0z m0.7 0.7q0.1-0.1-0.1-0.3-0.2-0.2-0.3-0.1-0.2 0.1 0 0.4 0.3 0.2 0.4 0z m0.7 1q0.2-0.1 0-0.4-0.2-0.3-0.4-0.1-0.2 0.1 0 0.4t0.4 0.1z m0.9 1q0.2-0.2-0.1-0.4-0.3-0.3-0.4-0.1-0.2 0.2 0 0.4 0.3 0.3 0.5 0.1z m1.3 0.5q0-0.2-0.3-0.3-0.4-0.1-0.4 0.1t0.2 0.4q0.4 0.1 0.5-0.2z m1.4 0.1q0-0.2-0.4-0.2-0.4 0-0.4 0.2 0 0.3 0.4 0.3 0.4 0 0.4-0.3z m1.3-0.2q-0.1-0.2-0.4-0.2-0.4 0.1-0.3 0.4t0.4 0.1 0.3-0.3z' })
+	                )
+	            );
+	        }
+	    }]);
+	
+	    return FaGithub;
+	}(React.Component);
+	
+	exports.default = FaGithub;
+	module.exports = exports['default'];
+
+/***/ },
+/* 196 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+	
+	var IconBase = function IconBase(_ref, _ref2) {
+	  var children = _ref.children;
+	  var color = _ref.color;
+	  var size = _ref.size;
+	  var style = _ref.style;
+	
+	  var props = _objectWithoutProperties(_ref, ['children', 'color', 'size', 'style']);
+	
+	  var _ref2$reactIconBase = _ref2.reactIconBase;
+	  var reactIconBase = _ref2$reactIconBase === undefined ? {} : _ref2$reactIconBase;
+	
+	  var computedSize = size || reactIconBase.size || '1em';
+	  return _react2.default.createElement('svg', _extends({
+	    children: children,
+	    fill: 'currentColor',
+	    preserveAspectRatio: 'xMidYMid meet',
+	    height: computedSize,
+	    width: computedSize
+	  }, reactIconBase, props, {
+	    style: _extends({
+	      verticalAlign: 'middle',
+	      color: color || reactIconBase.color
+	    }, reactIconBase.style || {}, style)
+	  }));
+	};
+	
+	IconBase.propTypes = {
+	  color: _react.PropTypes.string,
+	  size: _react.PropTypes.oneOfType([_react.PropTypes.string, _react.PropTypes.number]),
+	  style: _react.PropTypes.object
+	};
+	
+	IconBase.contextTypes = {
+	  reactIconBase: _react.PropTypes.shape(IconBase.propTypes)
+	};
+	
+	exports.default = IconBase;
+	module.exports = exports['default'];
 
 /***/ }
 /******/ ]);

@@ -31,6 +31,7 @@ footer, header, hgroup, menu, nav, section {
 body {
 	line-height: 1;
   font-family: sans-serif;
+  background: #6DD3CE;
 
 }
 ol, ul {
@@ -72,8 +73,10 @@ li {
   display: flex;
   flex-wrap: wrap;
   width: 400px;
-  margin: 0 auto;
+  margin: 20px auto;
   box-sizing: border-box;
+  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5);
+
 }
 
 .start {
@@ -90,7 +93,7 @@ li {
 }
 
 .child {
-  background: #C8E9A0;
+  background: #6DD3CE;
 }
 
 .shortest {
@@ -106,7 +109,7 @@ li {
 }
 
 h1 {
-  margin: 40px auto;
+  margin: 0 auto;
   text-align: center;
   font-size: 38px;
   color: #A13D63;
@@ -128,4 +131,30 @@ padding: 20px;
   background: #68efad;
   width: 80px;
   margin: 20px auto;
+}
+
+.footer {
+  display: flex;
+justify-content: space-between;
+width: 900px;
+position: absolute;
+bottom: 0;
+border-top: 1px solid;
+
+}
+
+.footer div {
+  padding: 20px;
+}
+
+.main {
+  padding: 40px 0px;
+  width: 900px;
+  margin: 0 auto;
+  height: 100vh;
+  background: #eee;
+}
+
+.github-icon {
+  font-size: 24px;
 }
