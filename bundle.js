@@ -21497,14 +21497,14 @@
 	    key: 'blankMaze',
 	    value: function blankMaze() {
 	      var maze = [];
-	      for (var i = 0; i < 10; i++) {
+	      for (var i = 0; i < 20; i++) {
 	        maze.push([]);
-	        for (var j = 0; j < 10; j++) {
+	        for (var j = 0; j < 20; j++) {
 	          maze[i].push('path');
 	        }
 	      }
 	      maze[0][0] = 'start';
-	      maze[9][9] = 'finish';
+	      maze[19][19] = 'finish';
 	      return maze;
 	    }
 	  }, {
@@ -21512,7 +21512,7 @@
 	    value: function findShortestPath() {
 	      var _this2 = this;
 	
-	      var shortestPath = [this.path['9,9']];
+	      var shortestPath = [this.path['19,19']];
 	      while (shortestPath.slice(-1)[0][0] !== 0 || shortestPath.slice(-1)[0][1] !== 0) {
 	        var endEl = shortestPath.slice(-1)[0];
 	        var elKey = endEl.join();
@@ -21548,7 +21548,7 @@
 	      if (pos[0] < 0 || pos[1] < 0) {
 	        return false;
 	      }
-	      if (pos[0] > 9 || pos[1] > 9) {
+	      if (pos[0] > 19 || pos[1] > 19) {
 	        return false;
 	      }
 	      var inValidTypes = ['wall', 'checking', 'start', 'child'];
@@ -21711,11 +21711,11 @@
 	    key: 'mapGrid',
 	    value: function mapGrid() {
 	      var nodes = [];
-	      for (var i = 0; i < 10; i++) {
-	        for (var j = 0; j < 10; j++) {
+	      for (var i = 0; i < 20; i++) {
+	        for (var j = 0; j < 20; j++) {
 	          var type = this.state.maze[i][j];
 	          var key = '' + i + j;
-	          nodes.push(_react2.default.createElement(_node2.default, { type: type, coords: [i, j], handleClick: this.handleClick.bind(this, [i, j]), key: key }));
+	          nodes.push(_react2.default.createElement(_node2.default, { type: type, coords: [i, j], handleClick: this.handleClick.bind(this, [i, j]) }));
 	        }
 	      }
 	      return nodes;

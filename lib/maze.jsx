@@ -18,19 +18,19 @@ class Maze extends React.Component {
 
   blankMaze() {
     let maze = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 20; i++) {
       maze.push([]);
-      for (let j = 0; j < 10; j++) {
+      for (let j = 0; j < 20; j++) {
         maze[i].push('path');
       }
     }
     maze[0][0] = 'start';
-    maze[9][9] = 'finish';
+    maze[19][19] = 'finish';
     return maze;
   }
 
   findShortestPath() {
-    const shortestPath = [this.path['9,9']];
+    const shortestPath = [this.path['19,19']];
     while ((shortestPath.slice(-1)[0][0] !== 0) || (shortestPath.slice(-1)[0][1] !== 0)) {
       let endEl = shortestPath.slice(-1)[0];
       let elKey = endEl.join();
@@ -68,7 +68,7 @@ class Maze extends React.Component {
     if (pos[0] < 0 || pos[1] < 0) {
       return false;
     }
-    if (pos[0] > 9 || pos[1] > 9) {
+    if (pos[0] > 19 || pos[1] > 19) {
       return false;
     }
     let inValidTypes = ['wall', 'checking', 'start', 'child'];
@@ -216,11 +216,11 @@ class Maze extends React.Component {
 
   mapGrid() {
     const nodes = [];
-    for (let i = 0; i < 10; i++) {
-      for (let j = 0; j < 10; j++) {
+    for (let i = 0; i < 20; i++) {
+      for (let j = 0; j < 20; j++) {
         let type = this.state.maze[i][j];
         let key = `${i}${j}`;
-        nodes.push(<Node type={type} coords={[i, j]} handleClick={this.handleClick.bind(this, [i, j])} key={key}/>);
+        nodes.push(<Node type={type} coords={[i, j]} handleClick={this.handleClick.bind(this, [i, j])} />);
       }
     }
     return nodes;

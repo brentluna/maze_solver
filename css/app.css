@@ -49,15 +49,15 @@ table {
 	border-spacing: 0;
 }
 .node {
-  width: 50px;
-  height: 50px;
-  padding: 5px;
+  width: 20px;
+  height: 20px;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
 }
 
 
 li {
   list-style: none;
+  box-sizing: border-box;
 }
 
 .path {
@@ -71,8 +71,9 @@ li {
 .grid-ul {
   display: flex;
   flex-wrap: wrap;
-  width: 630px;
+  width: 400px;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 .start {
