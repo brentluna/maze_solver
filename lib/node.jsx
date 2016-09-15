@@ -9,7 +9,7 @@
       let cName = `node ${this.props.type}`;
 
       return(
-        <li className={cName} onClick={this.props.handleClick} >
+        <li className={cName} onMouseOver={this.props.handleClick} >
 
         </li>
       );

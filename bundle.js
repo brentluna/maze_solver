@@ -21489,7 +21489,9 @@
 	    _this.solveDfs = _this.solveDfs.bind(_this);
 	    _this.reset = _this.reset.bind(_this);
 	    _this.path = {};
-	    _this.state = { unsolved: true, maze: _this.blankMaze() };
+	    _this.state = { unsolved: true, maze: _this.blankMaze(), mouseDown: false };
+	    _this.mUp = _this.mUp.bind(_this);
+	    _this.mDown = _this.mDown.bind(_this);
 	    return _this;
 	  }
 	
@@ -21536,7 +21538,7 @@
 	  }, {
 	    key: 'handleClick',
 	    value: function handleClick(coords, e) {
-	      if (this.state.maze[coords[0]][coords[1]] === 'path') {
+	      if (this.state.mouseDown && this.state.maze[coords[0]][coords[1]] === 'path') {
 	        var newMaze = this.state.maze;
 	        newMaze[coords[0]][coords[1]] = 'wall';
 	        this.setState({ maze: newMaze });
@@ -21715,10 +21717,22 @@
 	        for (var j = 0; j < 20; j++) {
 	          var type = this.state.maze[i][j];
 	          var key = '' + i + j;
-	          nodes.push(_react2.default.createElement(_node2.default, { type: type, coords: [i, j], handleClick: this.handleClick.bind(this, [i, j]) }));
+	          nodes.push(_react2.default.createElement(_node2.default, { type: type, coords: [i, j], handleClick: this.handleClick.bind(this, [i, j]), mouseDown: this.state.mouseDown }));
 	        }
 	      }
 	      return nodes;
+	    }
+	  }, {
+	    key: 'mUp',
+	    value: function mUp() {
+	      this.setState({ mouseDown: true });
+	      console.log(this.state.mouseDown);
+	    }
+	  }, {
+	    key: 'mDown',
+	    value: function mDown() {
+	      this.setState({ mouseDown: false });
+	      console.log(this.state.mouseDown);
 	    }
 	  }, {
 	    key: 'render',
@@ -21729,7 +21743,7 @@
 	        null,
 	        _react2.default.createElement(
 	          'ul',
-	          { className: 'grid-ul' },
+	          { className: 'grid-ul', onMouseDown: this.mUp, onMouseUp: this.mDown },
 	          this.mapGrid()
 	        ),
 	        _react2.default.createElement(
@@ -21798,7 +21812,7 @@
 	    value: function render() {
 	      var cName = 'node ' + this.props.type;
 	
-	      return _react2.default.createElement('li', { className: cName, onClick: this.props.handleClick });
+	      return _react2.default.createElement('li', { className: cName, onMouseOver: this.props.handleClick });
 	    }
 	  }]);
 	

@@ -13,7 +13,9 @@ class Maze extends React.Component {
     this.solveDfs = this.solveDfs.bind(this);
     this.reset = this.reset.bind(this);
     this.path = {};
-    this.state = { unsolved: true, maze: this.blankMaze()};
+    this.state = { unsolved: true, maze: this.blankMaze(), mouseDown: false};
+    this.mUp = this.mUp.bind(this);
+    this.mDown = this.mDown.bind(this);
   }
 
   blankMaze() {
@@ -55,7 +57,7 @@ class Maze extends React.Component {
 
 
   handleClick(coords, e) {
-    if (this.state.maze[coords[0]][coords[1]] === 'path') {
+    if (this.state.mouseDown && this.state.maze[coords[0]][coords[1]] === 'path') {
       let newMaze = this.state.maze;
       newMaze[coords[0]][coords[1]] = 'wall';
       this.setState({maze: newMaze});
@@ -220,17 +222,26 @@ class Maze extends React.Component {
       for (let j = 0; j < 20; j++) {
         let type = this.state.maze[i][j];
         let key = `${i}${j}`;
-        nodes.push(<Node type={type} coords={[i, j]} handleClick={this.handleClick.bind(this, [i, j])} />);
+        nodes.push(<Node type={type} coords={[i, j]} handleClick={this.handleClick.bind(this, [i, j])} mouseDown={this.state.mouseDown} />);
       }
     }
     return nodes;
+  }
+
+  mUp() {
+    this.setState({mouseDown: true});
+    console.log(this.state.mouseDown);
+  }
+  mDown() {
+    this.setState({mouseDown: false});
+    console.log(this.state.mouseDown);
   }
 
   render() {
 
     return(
       <div>
-        <ul className='grid-ul'>
+        <ul className='grid-ul' onMouseDown={this.mUp} onMouseUp={this.mDown}>
           {this.mapGrid()}
         </ul>
         <div className='button-div'>
