@@ -60,3 +60,8 @@ The maze cells change color as the algorithm checks them, so you can see how the
   }
 
 ```
+
+## Future Directions
+
+- Add additional algorithms, such as Best First Search
+- Add option to select start and end points 
