@@ -1,5 +1,6 @@
 import React from 'react';
 import Node from './node';
+import Solver from './dfs';
 
 class Maze extends React.Component {
   constructor(props) {
@@ -8,7 +9,7 @@ class Maze extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.unsolved = true;
     this.bfs = this.bfs.bind(this);
-    this.dfs = this.dfs.bind(this);
+    // this.dfs = this.dfs.bind(this);
     this.dfsPath = [];
     this.solveDfs = this.solveDfs.bind(this);
     this.reset = this.reset.bind(this);
@@ -30,33 +31,33 @@ class Maze extends React.Component {
     maze[19][19] = 'finish';
     return maze;
   }
-
-  findShortestPath() {
-    const shortestPath = [this.path['19,19']];
-    while ((shortestPath.slice(-1)[0][0] !== 0) || (shortestPath.slice(-1)[0][1] !== 0)) {
-      let endEl = shortestPath.slice(-1)[0];
-      let elKey = endEl.join();
-      shortestPath.push(this.path[elKey]);
-    }
-    let idx = 0;
-    shortestPath.pop();
-    shortestPath.reverse();
-    let pathInterval = setInterval(() => {
-
-      if (idx < shortestPath.length) {
-        let newMaze = this.state.maze;
-        let coords = shortestPath[idx];
-        newMaze[coords[0]][coords[1]] = 'shortest';
-        this.setState({maze: newMaze});
-        idx++;
-      } else {
-
-        clearInterval(pathInterval);
-        this.setState({solving: false});
-      }
-    }, 50);
-
-  }
+  //
+  // findShortestPath() {
+  //   const shortestPath = [this.path['19,19']];
+  //   while ((shortestPath.slice(-1)[0][0] !== 0) || (shortestPath.slice(-1)[0][1] !== 0)) {
+  //     let endEl = shortestPath.slice(-1)[0];
+  //     let elKey = endEl.join();
+  //     shortestPath.push(this.path[elKey]);
+  //   }
+  //   let idx = 0;
+  //   shortestPath.pop();
+  //   shortestPath.reverse();
+  //   let pathInterval = setInterval(() => {
+  //
+  //     if (idx < shortestPath.length) {
+  //       let newMaze = this.state.maze;
+  //       let coords = shortestPath[idx];
+  //       newMaze[coords[0]][coords[1]] = 'shortest';
+  //       this.setState({maze: newMaze});
+  //       idx++;
+  //     } else {
+  //
+  //       clearInterval(pathInterval);
+  //       this.setState({solving: false});
+  //     }
+  //   }, 50);
+  //
+  // }
 
 
   handleClick(coords, e) {
@@ -153,55 +154,80 @@ class Maze extends React.Component {
   }
 
 
-  dfs(e, start = [0, 0]) {
-    const that = this;
-    if (that.dfsCheckPos(start)) {
-      return true;
-    }
-    if (this.unsolved && this.state.unsolved) {
-      let children = that.findChildren(start);
-
-      children.forEach(child => {
-        let result = that.dfs(1,child);
-        if (result) {
-          that.traceDFS();
-          return result;
-        } else {
-          return false;
-        }
-      });
-
-    }
-    return false;
-  }
+  // dfs(e, start = [0, 0]) {
+  //   const that = this;
+  //   if (that.dfsCheckPos(start)) {
+  //     return true;
+  //   }
+  //   if (this.unsolved && this.state.unsolved) {
+  //     let children = that.findChildren(start);
+  //
+  //     children.forEach(child => {
+  //       let result = that.dfs(1,child);
+  //       if (result) {
+  //         that.traceDFS();
+  //         return result;
+  //       } else {
+  //         return false;
+  //       }
+  //     });
+  //
+  //   }
+  //   return false;
+  // }
 
   solveDfs(e) {
+    console.log('solvedfs');
     e.preventDefault();
+
     if (!this.state.solving) {
       this.setState({solving: true});
-      return () => {
-        this.dfs([0, 0]);
-      };
+      // return () => {
+
+        const dfsSolver = new Solver(this.state.maze);
+
+        let result = dfsSolver.dfs();
+        this.traceDFS(result.path, result.nodes.slice(-1)[0]);
+      // };
     }
   }
 
-  traceDFS() {
-    console.log(this.dfsPath);
+  traceDFS(dfsPath, node) {
 
     let idx = 0;
     const that = this;
     let dfsInterval = setInterval(() => {
-      if (idx < this.dfsPath.length) {
-        let pos = that.dfsPath[idx];
+      if (idx < dfsPath.length) {
+        let pos = dfsPath[idx];
         let newMaze = that.state.maze;
         newMaze[pos[0]][pos[1]] = 'checking';
         that.setState({maze: newMaze});
         idx++;
       } else {
         clearInterval(dfsInterval);
-        that.findShortestPath();
+        that.findShortestPath(node);
       }
     }, 20);
+  }
+
+  findShortestPath(node) {
+    let path = [node.parent];
+    while (path.slice(-1)[0].parent.value !== 'start') {
+      let parentNode = path.slice(-1)[0].parent;
+      path.push(parentNode);
+    }
+    let idx = 0;
+    let pathInterval = setInterval(() => {
+      if (idx < path.length) {
+        let nodePos = path[idx].pos;
+        let newMaze = this.state.maze;
+        newMaze[nodePos[0]][nodePos[1]] = 'shortest';
+        this.setState({maze: newMaze});
+        idx++;
+      } else {
+        clearInterval(pathInterval);
+      }
+    }, 50);
   }
 
   dfsCheckPos(pos) {
@@ -258,7 +284,7 @@ class Maze extends React.Component {
         </ul>
         <div className='button-div'>
           <button className='button' onClick={this.bfs} >Solve BFS</button>
-          <button className='button'onClick={this.dfs} >Solve DFS</button>
+          <button className='button' onClick={this.solveDfs} >Solve DFS</button>
           <button className='button' onClick={this.reset}>Reset</button>
         </div>
       </div>
