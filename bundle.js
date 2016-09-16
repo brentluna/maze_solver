@@ -21522,6 +21522,7 @@
 	      }
 	      var idx = 0;
 	      shortestPath.pop();
+	      shortestPath.reverse();
 	      var pathInterval = setInterval(function () {
 	
 	        if (idx < shortestPath.length) {

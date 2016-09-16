@@ -40,6 +40,7 @@ class Maze extends React.Component {
     }
     let idx = 0;
     shortestPath.pop();
+    shortestPath.reverse();
     let pathInterval = setInterval(() => {
 
       if (idx < shortestPath.length) {
@@ -159,7 +160,7 @@ class Maze extends React.Component {
     }
     if (this.unsolved && this.state.unsolved) {
       let children = that.findChildren(start);
-  
+
       children.forEach(child => {
         let result = that.dfs(1,child);
         if (result) {
