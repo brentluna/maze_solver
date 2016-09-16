@@ -62,6 +62,8 @@
 	
 	var _reactModal2 = _interopRequireDefault(_reactModal);
 	
+	var _dfs = __webpack_require__(195);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	document.addEventListener('DOMContentLoaded', function () {
@@ -23536,9 +23538,11 @@
 	
 	var _node2 = _interopRequireDefault(_node);
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	var _dfs = __webpack_require__(195);
 	
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	var _dfs2 = _interopRequireDefault(_dfs);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -23557,11 +23561,11 @@
 	    _this.mapGrid = _this.mapGrid.bind(_this);
 	    _this.handleClick = _this.handleClick.bind(_this);
 	    _this.unsolved = true;
-	    _this.bfs = _this.bfs.bind(_this);
-	    _this.dfs = _this.dfs.bind(_this);
+	    _this.solveBfs = _this.solveBfs.bind(_this);
 	    _this.dfsPath = [];
 	    _this.solveDfs = _this.solveDfs.bind(_this);
 	    _this.reset = _this.reset.bind(_this);
+	    _this.resetButton = _this.resetButton.bind(_this);
 	    _this.path = {};
 	    _this.state = { unsolved: true, maze: _this.blankMaze(), mouseDown: false, solving: false };
 	    _this.mUp = _this.mUp.bind(_this);
@@ -23584,35 +23588,6 @@
 	      return maze;
 	    }
 	  }, {
-	    key: 'findShortestPath',
-	    value: function findShortestPath() {
-	      var _this2 = this;
-	
-	      var shortestPath = [this.path['19,19']];
-	      while (shortestPath.slice(-1)[0][0] !== 0 || shortestPath.slice(-1)[0][1] !== 0) {
-	        var endEl = shortestPath.slice(-1)[0];
-	        var elKey = endEl.join();
-	        shortestPath.push(this.path[elKey]);
-	      }
-	      var idx = 0;
-	      shortestPath.pop();
-	      shortestPath.reverse();
-	      var pathInterval = setInterval(function () {
-	
-	        if (idx < shortestPath.length) {
-	          var newMaze = _this2.state.maze;
-	          var coords = shortestPath[idx];
-	          newMaze[coords[0]][coords[1]] = 'shortest';
-	          _this2.setState({ maze: newMaze });
-	          idx++;
-	        } else {
-	
-	          clearInterval(pathInterval);
-	          _this2.setState({ solving: false });
-	        }
-	      }, 50);
-	    }
-	  }, {
 	    key: 'handleClick',
 	    value: function handleClick(coords, e) {
 	      if (!this.state.solving && this.state.mouseDown && this.state.maze[coords[0]][coords[1]] === 'path') {
@@ -23622,180 +23597,112 @@
 	      }
 	    }
 	  }, {
-	    key: 'isValidPos',
-	    value: function isValidPos(pos) {
-	      if (pos[0] < 0 || pos[1] < 0) {
-	        return false;
-	      }
-	      if (pos[0] > 19 || pos[1] > 19) {
-	        return false;
-	      }
-	      var inValidTypes = ['wall', 'checking', 'start', 'child'];
-	      var posValue = this.state.maze[pos[0]][pos[1]];
-	      if (inValidTypes.includes(posValue)) {
-	        return false;
-	      }
-	      return true;
-	    }
-	  }, {
-	    key: 'findChildren',
-	    value: function findChildren(pos) {
-	      var _this3 = this;
+	    key: 'solveBfs',
+	    value: function solveBfs(e) {
+	      var _this2 = this;
 	
-	      var children = [];
-	      var deltas = [-1, 1];
-	      var x = pos[0];
-	      var y = pos[1];
-	
-	      deltas.forEach(function (delta) {
-	        var newPos = [x + delta, y];
-	        var newPos2 = [x, y + delta];
-	        if (_this3.isValidPos(newPos)) {
-	          children.push(newPos);
-	        }
-	        if (_this3.isValidPos(newPos2)) {
-	          children.push(newPos2);
-	        }
-	      });
-	
-	      children.forEach(function (child) {
-	        _this3.path[child.join()] = pos;
-	        _this3.markAsChild(child);
-	      });
-	      return children;
-	    }
-	  }, {
-	    key: 'markAsChild',
-	    value: function markAsChild(pos) {
-	      if (this.state.maze[pos[0]][pos[1]] !== 'finish') {
-	        var newMaze = this.state.maze;
-	        newMaze[pos[0]][pos[1]] = 'child';
-	        this.setState({ maze: newMaze });
-	      }
-	    }
-	  }, {
-	    key: 'checkPos',
-	    value: function checkPos(pos) {
-	      var newMaze = this.state.maze;
-	      var posValue = newMaze[pos[0]][pos[1]];
-	
-	      if (posValue === 'finish') {
-	        this.unsolved = false;
-	        this.setState({ unsolved: false });
-	      } else if (posValue !== 'start') {
-	        newMaze[pos[0]][pos[1]] = 'checking';
-	      }
-	
-	      this.setState({ maze: newMaze });
-	    }
-	  }, {
-	    key: 'bfs',
-	    value: function bfs(e) {
-	      var _this4 = this;
-	
+	      console.log('solvedfs');
 	      e.preventDefault();
+	
 	      if (!this.state.solving) {
-	        (function () {
-	          _this4.setState({ solving: true });
-	          var queue = [[0, 0]];
+	        this.setState({ solving: true });
 	
-	          var solveInterval = setInterval(function () {
-	            if (_this4.unsolved && queue.length) {
-	              var parent = queue.shift();
-	              var newChildren = _this4.findChildren(parent);
-	              queue.push.apply(queue, _toConsumableArray(newChildren));
-	              _this4.checkPos(parent);
-	            } else {
-	              clearInterval(solveInterval);
-	              _this4.findShortestPath();
-	            }
-	          }, 30);
-	        })();
-	      }
-	    }
-	  }, {
-	    key: 'dfs',
-	    value: function dfs(e) {
-	      var start = arguments.length <= 1 || arguments[1] === undefined ? [0, 0] : arguments[1];
+	        var bfsSolver = new _dfs2.default(this.state.maze);
 	
-	      var that = this;
-	      if (that.dfsCheckPos(start)) {
-	        return true;
+	        var result = bfsSolver.bfs();
+	        if (result) {
+	          this.traceDFS(result.path, result.nodes.slice(-1)[0]);
+	          this.setState({ solving: false });
+	        } else {
+	          this.setState({ solving: false }, function () {
+	            _this2.reset();
+	          });
+	          alert('Unsolvable');
+	        }
 	      }
-	      if (this.unsolved && this.state.unsolved) {
-	        var children = that.findChildren(start);
-	
-	        children.forEach(function (child) {
-	          var result = that.dfs(1, child);
-	          if (result) {
-	            that.traceDFS();
-	            return result;
-	          } else {
-	            return false;
-	          }
-	        });
-	      }
-	      return false;
 	    }
 	  }, {
 	    key: 'solveDfs',
 	    value: function solveDfs(e) {
-	      var _this5 = this;
+	      var _this3 = this;
 	
+	      console.log('solvedfs');
 	      e.preventDefault();
+	
 	      if (!this.state.solving) {
 	        this.setState({ solving: true });
-	        return function () {
-	          _this5.dfs([0, 0]);
-	        };
+	
+	        var dfsSolver = new _dfs2.default(this.state.maze);
+	
+	        var result = dfsSolver.dfs();
+	        if (result) {
+	          this.traceDFS(result.path, result.nodes.slice(-1)[0]);
+	          this.setState({ solving: false });
+	        } else {
+	          this.setState({ solving: false }, function () {
+	            _this3.reset();
+	          });
+	          alert('Unsolvable');
+	        }
 	      }
 	    }
 	  }, {
 	    key: 'traceDFS',
-	    value: function traceDFS() {
-	      var _this6 = this;
+	    value: function traceDFS(dfsPath, node) {
 	
-	      console.log(this.dfsPath);
-	
-	      var idx = 0;
+	      var idx = 1;
 	      var that = this;
 	      var dfsInterval = setInterval(function () {
-	        if (idx < _this6.dfsPath.length) {
-	          var pos = that.dfsPath[idx];
+	        if (idx < dfsPath.length - 1) {
+	          var pos = dfsPath[idx];
 	          var newMaze = that.state.maze;
 	          newMaze[pos[0]][pos[1]] = 'checking';
 	          that.setState({ maze: newMaze });
 	          idx++;
 	        } else {
 	          clearInterval(dfsInterval);
-	          that.findShortestPath();
+	          that.findShortestPath(node);
 	        }
 	      }, 20);
 	    }
 	  }, {
-	    key: 'dfsCheckPos',
-	    value: function dfsCheckPos(pos) {
+	    key: 'findShortestPath',
+	    value: function findShortestPath(node) {
+	      var _this4 = this;
 	
-	      var posValue = this.state.maze[pos[0]][pos[1]];
-	      if (posValue === 'finish') {
-	        this.unsolved = false;
-	        this.setState({ unsolved: false });
-	        return true;
-	      } else if (posValue !== 'start') {
-	        this.dfsPath.push(pos);
+	      var path = [node.parent];
+	      while (path.slice(-1)[0].parent.value !== 'start') {
+	        var parentNode = path.slice(-1)[0].parent;
+	        path.push(parentNode);
 	      }
-	      return false;
+	      var idx = 0;
+	      var pathInterval = setInterval(function () {
+	        if (idx < path.length) {
+	          var nodePos = path[idx].pos;
+	          var newMaze = _this4.state.maze;
+	          newMaze[nodePos[0]][nodePos[1]] = 'shortest';
+	          _this4.setState({ maze: newMaze });
+	          idx++;
+	        } else {
+	          clearInterval(pathInterval);
+	        }
+	      }, 50);
 	    }
 	  }, {
 	    key: 'reset',
-	    value: function reset(e) {
-	      e.preventDefault();
+	    value: function reset() {
 	      if (!this.state.solving) {
 	        this.unsolved = true;
 	        this.path = {};
 	        this.dfsPath = [];
 	        this.setState({ maze: this.blankMaze(), unsolved: true });
 	      }
+	    }
+	  }, {
+	    key: 'resetButton',
+	    value: function resetButton(e) {
+	      e.preventDefault();
+	      this.reset();
 	    }
 	  }, {
 	    key: 'mapGrid',
@@ -23838,17 +23745,17 @@
 	          { className: 'button-div' },
 	          _react2.default.createElement(
 	            'button',
-	            { className: 'button', onClick: this.bfs },
+	            { className: 'button', onClick: this.solveBfs },
 	            'Solve BFS'
 	          ),
 	          _react2.default.createElement(
 	            'button',
-	            { className: 'button', onClick: this.dfs },
+	            { className: 'button', onClick: this.solveDfs },
 	            'Solve DFS'
 	          ),
 	          _react2.default.createElement(
 	            'button',
-	            { className: 'button', onClick: this.reset },
+	            { className: 'button', onClick: this.resetButton },
 	            'Reset'
 	          )
 	        )
@@ -23909,8 +23816,224 @@
 	exports.default = Node;
 
 /***/ },
-/* 195 */,
-/* 196 */,
+/* 195 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _poly_tree_node = __webpack_require__(196);
+	
+	var _poly_tree_node2 = _interopRequireDefault(_poly_tree_node);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var Solver = function () {
+	  function Solver(maze) {
+	    _classCallCheck(this, Solver);
+	
+	    this.maze = maze;
+	    this.path = [];
+	    this.nodes = [];
+	  }
+	
+	  _createClass(Solver, [{
+	    key: 'isValidPos',
+	    value: function isValidPos(pos) {
+	      for (var i = 0; i < this.path.length; i++) {
+	        var el = this.path[i];
+	        if (el[0] === pos[0] && el[1] === pos[1]) {
+	          return false;
+	        }
+	      }
+	      if (pos[0] < 0 || pos[1] < 0) {
+	        return false;
+	      }
+	      if (pos[0] > 19 || pos[1] > 19) {
+	        return false;
+	      }
+	      var inValidTypes = ['wall', 'checking', 'start'];
+	      var posValue = this.maze[pos[0]][pos[1]];
+	      if (inValidTypes.includes(posValue)) {
+	        return false;
+	      }
+	      return true;
+	    }
+	  }, {
+	    key: 'findChildren',
+	    value: function findChildren(node) {
+	      var _this = this;
+	
+	      var deltas = [-1, 1];
+	      var x = node.pos[0];
+	      var y = node.pos[1];
+	      deltas.forEach(function (delta) {
+	        var newPos = [x + delta, y];
+	        var newPos2 = [x, y + delta];
+	
+	        if (_this.isValidPos(newPos)) {
+	
+	          var newVal1 = _this.newValue(newPos);
+	          var child1 = new _poly_tree_node2.default(newVal1, newPos);
+	          node.addChild(child1);
+	        }
+	        if (_this.isValidPos(newPos2)) {
+	          var newVal2 = _this.newValue(newPos2);
+	          var child2 = new _poly_tree_node2.default(newVal2, newPos2);
+	          node.addChild(child2);
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'newValue',
+	    value: function newValue(pos) {
+	
+	      if (this.maze[pos[0]][pos[1]] === 'finish') {
+	        return 'finish';
+	      } else {
+	        return 'child';
+	      }
+	    }
+	  }, {
+	    key: 'dfs',
+	    value: function dfs() {
+	      var node = arguments.length <= 0 || arguments[0] === undefined ? new _poly_tree_node2.default('start', [0, 0]) : arguments[0];
+	
+	      this.path.push(node.pos);
+	      this.nodes.push(node);
+	      var that = this;
+	      if (node.value === 'finish') {
+	
+	        return { path: this.path, nodes: this.nodes };
+	      }
+	      this.findChildren(node);
+	
+	      for (var i = 0; i < node.children.length; i++) {
+	        var child = node.children[i];
+	        var result = this.dfs(child);
+	        if (result) {
+	
+	          return { path: this.path, nodes: this.nodes };
+	        }
+	      }
+	
+	      return null;
+	    }
+	  }, {
+	    key: 'bfs',
+	    value: function bfs() {
+	      var node = arguments.length <= 0 || arguments[0] === undefined ? new _poly_tree_node2.default('start', [0, 0]) : arguments[0];
+	
+	
+	      var queue = [node];
+	      var unsolved = true;
+	      while (unsolved && queue.length) {
+	        var _path;
+	
+	        var parent = queue.shift();
+	        console.log(parent.pos);
+	        this.path.push(parent.pos);
+	        this.nodes.push(parent);
+	        if (parent.value === 'finish') {
+	          unsolved = false;
+	          return { path: this.path, nodes: this.nodes };
+	        }
+	        this.findChildren(parent);
+	        var childPos = parent.children.map(function (child) {
+	          return child.pos;
+	        });
+	        (_path = this.path).push.apply(_path, _toConsumableArray(childPos));
+	
+	        queue.push.apply(queue, _toConsumableArray(parent.children));
+	      }
+	      return null;
+	    }
+	  }]);
+	
+	  return Solver;
+	}();
+	
+	exports.default = Solver;
+
+/***/ },
+/* 196 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var PolyTreeNode = function () {
+	  function PolyTreeNode(value, pos) {
+	    _classCallCheck(this, PolyTreeNode);
+	
+	    this.value = value;
+	    this.pos = pos;
+	    this.parent = null;
+	    this.children = [];
+	  }
+	
+	  _createClass(PolyTreeNode, [{
+	    key: "children",
+	    value: function children() {
+	      return [].concat(_toConsumableArray(this.children));
+	    }
+	  }, {
+	    key: "setParent",
+	    value: function setParent(parent) {
+	      if (this.parent === parent) {
+	        return;
+	      }
+	
+	      if (this.parent) {
+	        var idx = this.parent.children.indexOf(this);
+	        this.parent.children.splice(idx, 1);
+	      }
+	
+	      this.parent = parent;
+	      if (this.parent) {
+	        this.parent.children.push(this);
+	      }
+	    }
+	  }, {
+	    key: "addChild",
+	    value: function addChild(child) {
+	
+	      child.setParent(this);
+	    }
+	  }, {
+	    key: "removeChild",
+	    value: function removeChild(child) {
+	      if (child && !this.children.includes(child)) {
+	        return;
+	      }
+	      child.parent = null;
+	    }
+	  }]);
+	
+	  return PolyTreeNode;
+	}();
+	
+	exports.default = PolyTreeNode;
+
+/***/ },
 /* 197 */
 /***/ function(module, exports, __webpack_require__) {
 
