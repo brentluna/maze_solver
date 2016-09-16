@@ -3,19 +3,19 @@
 
 ## Background
 
-Inspired my my fascination with Breadth First Search and it's ability to find the shortest path.
+Inspired by my fascination with Breadth First Search and it's ability to find the shortest path.
 
-![unsolved](./screenshots/unsolved.png)
+![unsolved](./screenshots/maze.gif)
 
-![solved](./screenshots/solved.png)
+
 
 ## Goal
 
-Design you maze by dragging your mouse across cells of the grid. Once designed, you can choose whether you want an iterative Breadth First search or recursive Depth First Search to solve the maze.
+Design your maze by dragging the mouse across cells of the grid. Once designed, you can choose whether you want an iterative Breadth First search or recursive Depth First Search to solve the maze.
 
 ## Solving Logic
 
-The maze cells change color as the algorithm check them, so you can see how the algorithm approaches solving the maze. It then draws the path that it discovered to get from start to finish, with breadth first, always choosing the shortest possible path.
+The maze cells change color as the algorithm checks them, so you can see how the algorithm approaches solving the maze. It then draws the path that it discovered to get from start to finish. When choosing breadth first, it will always choose the shortest path possible.
 
 
 ```javascript
