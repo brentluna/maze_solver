@@ -158,14 +158,11 @@ class Maze extends React.Component {
 
 
   dfs(e, start = [0, 0]) {
-
     const that = this;
-    console.log(start);
     if (that.dfsCheckPos(start)) {
       return true;
     }
     let children = that.findChildren(start);
-    console.log(children);
     children.forEach(child => {
       let result = that.dfs(1,child);
       if (result) {
@@ -176,7 +173,6 @@ class Maze extends React.Component {
       }
     });
     return false;
-
   }
 
   solveDfs(e) {

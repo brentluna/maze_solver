@@ -21648,14 +21648,11 @@
 	    value: function dfs(e) {
 	      var start = arguments.length <= 1 || arguments[1] === undefined ? [0, 0] : arguments[1];
 	
-	
 	      var that = this;
-	      console.log(start);
 	      if (that.dfsCheckPos(start)) {
 	        return true;
 	      }
 	      var children = that.findChildren(start);
-	      console.log(children);
 	      children.forEach(function (child) {
 	        var result = that.dfs(1, child);
 	        if (result) {
