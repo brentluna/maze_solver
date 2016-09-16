@@ -231,11 +231,12 @@ class Maze extends React.Component {
 
   mapGrid() {
     const nodes = [];
+    let key = '';
     for (let i = 0; i < 20; i++) {
       for (let j = 0; j < 20; j++) {
         let type = this.state.maze[i][j];
-        let key = `${i}${j}`;
-        nodes.push(<Node type={type} coords={[i, j]} handleClick={this.handleClick.bind(this, [i, j])} mouseDown={this.state.mouseDown} />);
+        key = key + 'a';
+        nodes.push(<Node type={type} coords={[i, j]} handleClick={this.handleClick.bind(this, [i, j])} mouseDown={this.state.mouseDown} key={key}/>);
       }
     }
     return nodes;
