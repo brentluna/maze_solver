@@ -23544,8 +23544,6 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -23563,11 +23561,11 @@
 	    _this.mapGrid = _this.mapGrid.bind(_this);
 	    _this.handleClick = _this.handleClick.bind(_this);
 	    _this.unsolved = true;
-	    _this.bfs = _this.bfs.bind(_this);
-	    // this.dfs = this.dfs.bind(this);
+	    _this.solveBfs = _this.solveBfs.bind(_this);
 	    _this.dfsPath = [];
 	    _this.solveDfs = _this.solveDfs.bind(_this);
 	    _this.reset = _this.reset.bind(_this);
+	    _this.resetButton = _this.resetButton.bind(_this);
 	    _this.path = {};
 	    _this.state = { unsolved: true, maze: _this.blankMaze(), mouseDown: false, solving: false };
 	    _this.mUp = _this.mUp.bind(_this);
@@ -23589,35 +23587,6 @@
 	      maze[19][19] = 'finish';
 	      return maze;
 	    }
-	    //
-	    // findShortestPath() {
-	    //   const shortestPath = [this.path['19,19']];
-	    //   while ((shortestPath.slice(-1)[0][0] !== 0) || (shortestPath.slice(-1)[0][1] !== 0)) {
-	    //     let endEl = shortestPath.slice(-1)[0];
-	    //     let elKey = endEl.join();
-	    //     shortestPath.push(this.path[elKey]);
-	    //   }
-	    //   let idx = 0;
-	    //   shortestPath.pop();
-	    //   shortestPath.reverse();
-	    //   let pathInterval = setInterval(() => {
-	    //
-	    //     if (idx < shortestPath.length) {
-	    //       let newMaze = this.state.maze;
-	    //       let coords = shortestPath[idx];
-	    //       newMaze[coords[0]][coords[1]] = 'shortest';
-	    //       this.setState({maze: newMaze});
-	    //       idx++;
-	    //     } else {
-	    //
-	    //       clearInterval(pathInterval);
-	    //       this.setState({solving: false});
-	    //     }
-	    //   }, 50);
-	    //
-	    // }
-	
-	
 	  }, {
 	    key: 'handleClick',
 	    value: function handleClick(coords, e) {
@@ -23628,145 +23597,63 @@
 	      }
 	    }
 	  }, {
-	    key: 'isValidPos',
-	    value: function isValidPos(pos) {
-	      if (pos[0] < 0 || pos[1] < 0) {
-	        return false;
-	      }
-	      if (pos[0] > 19 || pos[1] > 19) {
-	        return false;
-	      }
-	      var inValidTypes = ['wall', 'checking', 'start', 'child'];
-	      var posValue = this.state.maze[pos[0]][pos[1]];
-	      if (inValidTypes.includes(posValue)) {
-	        return false;
-	      }
-	      return true;
-	    }
-	  }, {
-	    key: 'findChildren',
-	    value: function findChildren(pos) {
+	    key: 'solveBfs',
+	    value: function solveBfs(e) {
 	      var _this2 = this;
 	
-	      var children = [];
-	      var deltas = [-1, 1];
-	      var x = pos[0];
-	      var y = pos[1];
-	
-	      deltas.forEach(function (delta) {
-	        var newPos = [x + delta, y];
-	        var newPos2 = [x, y + delta];
-	        if (_this2.isValidPos(newPos)) {
-	          children.push(newPos);
-	        }
-	        if (_this2.isValidPos(newPos2)) {
-	          children.push(newPos2);
-	        }
-	      });
-	
-	      children.forEach(function (child) {
-	        _this2.path[child.join()] = pos;
-	        _this2.markAsChild(child);
-	      });
-	      return children;
-	    }
-	  }, {
-	    key: 'markAsChild',
-	    value: function markAsChild(pos) {
-	      if (this.state.maze[pos[0]][pos[1]] !== 'finish') {
-	        var newMaze = this.state.maze;
-	        newMaze[pos[0]][pos[1]] = 'child';
-	        this.setState({ maze: newMaze });
-	      }
-	    }
-	  }, {
-	    key: 'checkPos',
-	    value: function checkPos(pos) {
-	      var newMaze = this.state.maze;
-	      var posValue = newMaze[pos[0]][pos[1]];
-	
-	      if (posValue === 'finish') {
-	        this.unsolved = false;
-	        this.setState({ unsolved: false });
-	      } else if (posValue !== 'start') {
-	        newMaze[pos[0]][pos[1]] = 'checking';
-	      }
-	
-	      this.setState({ maze: newMaze });
-	    }
-	  }, {
-	    key: 'bfs',
-	    value: function bfs(e) {
-	      var _this3 = this;
-	
-	      e.preventDefault();
-	      if (!this.state.solving) {
-	        (function () {
-	          _this3.setState({ solving: true });
-	          var queue = [[0, 0]];
-	
-	          var solveInterval = setInterval(function () {
-	            if (_this3.unsolved && queue.length) {
-	              var parent = queue.shift();
-	              var newChildren = _this3.findChildren(parent);
-	              queue.push.apply(queue, _toConsumableArray(newChildren));
-	              _this3.checkPos(parent);
-	            } else {
-	              clearInterval(solveInterval);
-	              _this3.findShortestPath();
-	            }
-	          }, 30);
-	        })();
-	      }
-	    }
-	
-	    // dfs(e, start = [0, 0]) {
-	    //   const that = this;
-	    //   if (that.dfsCheckPos(start)) {
-	    //     return true;
-	    //   }
-	    //   if (this.unsolved && this.state.unsolved) {
-	    //     let children = that.findChildren(start);
-	    //
-	    //     children.forEach(child => {
-	    //       let result = that.dfs(1,child);
-	    //       if (result) {
-	    //         that.traceDFS();
-	    //         return result;
-	    //       } else {
-	    //         return false;
-	    //       }
-	    //     });
-	    //
-	    //   }
-	    //   return false;
-	    // }
-	
-	  }, {
-	    key: 'solveDfs',
-	    value: function solveDfs(e) {
 	      console.log('solvedfs');
 	      e.preventDefault();
 	
 	      if (!this.state.solving) {
 	        this.setState({ solving: true });
-	        // return () => {
+	
+	        var bfsSolver = new _dfs2.default(this.state.maze);
+	
+	        var result = bfsSolver.bfs();
+	        if (result) {
+	          this.traceDFS(result.path, result.nodes.slice(-1)[0]);
+	          this.setState({ solving: false });
+	        } else {
+	          this.setState({ solving: false }, function () {
+	            _this2.reset();
+	          });
+	          alert('Unsolvable');
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'solveDfs',
+	    value: function solveDfs(e) {
+	      var _this3 = this;
+	
+	      console.log('solvedfs');
+	      e.preventDefault();
+	
+	      if (!this.state.solving) {
+	        this.setState({ solving: true });
 	
 	        var dfsSolver = new _dfs2.default(this.state.maze);
 	
 	        var result = dfsSolver.dfs();
-	        this.traceDFS(result.path, result.nodes.slice(-1)[0]);
-	        // };
+	        if (result) {
+	          this.traceDFS(result.path, result.nodes.slice(-1)[0]);
+	          this.setState({ solving: false });
+	        } else {
+	          this.setState({ solving: false }, function () {
+	            _this3.reset();
+	          });
+	          alert('Unsolvable');
+	        }
 	      }
 	    }
 	  }, {
 	    key: 'traceDFS',
 	    value: function traceDFS(dfsPath, node) {
 	
-	      var idx = 0;
+	      var idx = 1;
 	      var that = this;
 	      var dfsInterval = setInterval(function () {
-	        if (idx < dfsPath.length) {
+	        if (idx < dfsPath.length - 1) {
 	          var pos = dfsPath[idx];
 	          var newMaze = that.state.maze;
 	          newMaze[pos[0]][pos[1]] = 'checking';
@@ -23802,29 +23689,20 @@
 	      }, 50);
 	    }
 	  }, {
-	    key: 'dfsCheckPos',
-	    value: function dfsCheckPos(pos) {
-	
-	      var posValue = this.state.maze[pos[0]][pos[1]];
-	      if (posValue === 'finish') {
-	        this.unsolved = false;
-	        this.setState({ unsolved: false });
-	        return true;
-	      } else if (posValue !== 'start') {
-	        this.dfsPath.push(pos);
-	      }
-	      return false;
-	    }
-	  }, {
 	    key: 'reset',
-	    value: function reset(e) {
-	      e.preventDefault();
+	    value: function reset() {
 	      if (!this.state.solving) {
 	        this.unsolved = true;
 	        this.path = {};
 	        this.dfsPath = [];
 	        this.setState({ maze: this.blankMaze(), unsolved: true });
 	      }
+	    }
+	  }, {
+	    key: 'resetButton',
+	    value: function resetButton(e) {
+	      e.preventDefault();
+	      this.reset();
 	    }
 	  }, {
 	    key: 'mapGrid',
@@ -23867,7 +23745,7 @@
 	          { className: 'button-div' },
 	          _react2.default.createElement(
 	            'button',
-	            { className: 'button', onClick: this.bfs },
+	            { className: 'button', onClick: this.solveBfs },
 	            'Solve BFS'
 	          ),
 	          _react2.default.createElement(
@@ -23877,7 +23755,7 @@
 	          ),
 	          _react2.default.createElement(
 	            'button',
-	            { className: 'button', onClick: this.reset },
+	            { className: 'button', onClick: this.resetButton },
 	            'Reset'
 	          )
 	        )
@@ -24055,10 +23933,14 @@
 	    value: function bfs() {
 	      var node = arguments.length <= 0 || arguments[0] === undefined ? new _poly_tree_node2.default('start', [0, 0]) : arguments[0];
 	
+	
 	      var queue = [node];
 	      var unsolved = true;
 	      while (unsolved && queue.length) {
+	        var _path;
+	
 	        var parent = queue.shift();
+	        console.log(parent.pos);
 	        this.path.push(parent.pos);
 	        this.nodes.push(parent);
 	        if (parent.value === 'finish') {
@@ -24066,8 +23948,14 @@
 	          return { path: this.path, nodes: this.nodes };
 	        }
 	        this.findChildren(parent);
+	        var childPos = parent.children.map(function (child) {
+	          return child.pos;
+	        });
+	        (_path = this.path).push.apply(_path, _toConsumableArray(childPos));
+	
 	        queue.push.apply(queue, _toConsumableArray(parent.children));
 	      }
+	      return null;
 	    }
 	  }]);
 	
@@ -24075,13 +23963,6 @@
 	}();
 	
 	exports.default = Solver;
-	
-	//
-	// let maze = [['start', 'path', 'path'], ['path', 'path', 'path'], ['path', 'wall', 'finish']];
-	// let n = new PolyTreeNode('start', [0, 0]);
-	// let s = new Solver();
-	// console.log(s.maze);
-	// s.dfs(n);
 
 /***/ },
 /* 196 */
