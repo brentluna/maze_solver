@@ -21483,7 +21483,7 @@
 	    _this.mapGrid = _this.mapGrid.bind(_this);
 	    _this.handleClick = _this.handleClick.bind(_this);
 	    _this.unsolved = true;
-	    _this.solve = _this.solve.bind(_this);
+	    _this.bfs = _this.bfs.bind(_this);
 	    _this.dfs = _this.dfs.bind(_this);
 	    _this.dfsPath = [];
 	    _this.solveDfs = _this.solveDfs.bind(_this);
@@ -21521,6 +21521,7 @@
 	        shortestPath.push(this.path[elKey]);
 	      }
 	      var idx = 0;
+	      shortestPath.pop();
 	      var pathInterval = setInterval(function () {
 	
 	        if (idx < shortestPath.length) {
@@ -21581,12 +21582,7 @@
 	          children.push(newPos2);
 	        }
 	      });
-	      // deltas.forEach(delta => {
-	      //   let newPos = [x, (y + delta)];
-	      //   if (this.isValidPos(newPos)) {
-	      //     children.push(newPos);
-	      //   }
-	      // });
+	
 	      children.forEach(function (child) {
 	        _this3.path[child.join()] = pos;
 	        _this3.markAsChild(child);
@@ -21618,8 +21614,8 @@
 	      this.setState({ maze: newMaze });
 	    }
 	  }, {
-	    key: 'solve',
-	    value: function solve(e) {
+	    key: 'bfs',
+	    value: function bfs(e) {
 	      var _this4 = this;
 	
 	      e.preventDefault();
@@ -21636,7 +21632,6 @@
 	              _this4.checkPos(parent);
 	            } else {
 	              clearInterval(solveInterval);
-	              console.log('outside');
 	              _this4.findShortestPath();
 	            }
 	          }, 30);
@@ -21652,16 +21647,18 @@
 	      if (that.dfsCheckPos(start)) {
 	        return true;
 	      }
-	      var children = that.findChildren(start);
-	      children.forEach(function (child) {
-	        var result = that.dfs(1, child);
-	        if (result) {
-	          that.traceDFS();
-	          return result;
-	        } else {
-	          return false;
-	        }
-	      });
+	      if (this.unsolved && this.state.unsolved) {
+	        var children = that.findChildren(start);
+	        children.forEach(function (child) {
+	          var result = that.dfs(1, child);
+	          if (result) {
+	            that.traceDFS();
+	            return result;
+	          } else {
+	            return false;
+	          }
+	        });
+	      }
 	      return false;
 	    }
 	  }, {
@@ -21673,7 +21670,6 @@
 	      if (!this.state.solving) {
 	        this.setState({ solving: true });
 	        return function () {
-	          console.log('dfs');
 	          _this5.dfs([0, 0]);
 	        };
 	      }
@@ -21765,7 +21761,7 @@
 	          { className: 'button-div' },
 	          _react2.default.createElement(
 	            'button',
-	            { className: 'button', onClick: this.solve },
+	            { className: 'button', onClick: this.bfs },
 	            'Solve BFS'
 	          ),
 	          _react2.default.createElement(
