@@ -5,6 +5,9 @@
 
 Inspired my my fascination with Breadth First Search and it's ability to find the shortest path.
 
+![unsolved](./screenshots/unsolved.png)
+
+![solved](./screenshots/solved.png)
 
 ## Goal
 

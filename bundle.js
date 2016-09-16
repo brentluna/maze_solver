@@ -21649,6 +21649,7 @@
 	      }
 	      if (this.unsolved && this.state.unsolved) {
 	        var children = that.findChildren(start);
+	
 	        children.forEach(function (child) {
 	          var result = that.dfs(1, child);
 	          if (result) {

@@ -155,10 +155,10 @@ border-top: 1px solid;
 }
 
 .main {
-  padding: 40px 0px;
+  padding-top: 40px;
   width: 900px;
   margin: 0 auto;
-  height: 100vh;
+  height: 96vh;
   background: #eee;
 }
 
