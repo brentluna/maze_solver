@@ -23784,8 +23784,8 @@
 	            { className: 'left-buttons' },
 	            _react2.default.createElement(
 	              'button',
-	              { className: 'button', onClick: this.solveBfs },
-	              'Solve BFS'
+	              { className: 'button', onClick: this.randomMazeButton },
+	              'Random Maze'
 	            ),
 	            _react2.default.createElement(
 	              'button',
@@ -23798,13 +23798,13 @@
 	            { className: 'right-buttons' },
 	            _react2.default.createElement(
 	              'button',
-	              { className: 'button', onClick: this.randomMazeButton },
-	              'Random Maze'
+	              { className: 'button', onClick: this.resetButton },
+	              'Reset'
 	            ),
 	            _react2.default.createElement(
 	              'button',
-	              { className: 'button', onClick: this.resetButton },
-	              'Reset'
+	              { className: 'button', onClick: this.solveBfs },
+	              'Solve BFS'
 	            )
 	          )
 	        )

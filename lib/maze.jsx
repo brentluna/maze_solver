@@ -208,12 +208,12 @@ class Maze extends React.Component {
         </ul>
         <div className='button-div'>
           <div className='left-buttons'>
-            <button className='button' onClick={this.solveBfs} >Solve BFS</button>
+            <button className='button' onClick={this.randomMazeButton} >Random Maze</button>
             <button className='button' onClick={this.solveDfs} >Solve DFS</button>
           </div>
           <div className='right-buttons'>
-            <button className='button' onClick={this.randomMazeButton} >Random Maze</button>
             <button className='button' onClick={this.resetButton}>Reset</button>
+            <button className='button' onClick={this.solveBfs} >Solve BFS</button>
           </div>
         </div>
       </div>
