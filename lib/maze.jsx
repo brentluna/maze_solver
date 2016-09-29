@@ -17,6 +17,8 @@ class Maze extends React.Component {
     this.state = { unsolved: true, maze: this.blankMaze(), mouseDown: false, solving: false};
     this.mUp = this.mUp.bind(this);
     this.mDown = this.mDown.bind(this);
+    this.randomMazeButton = this.randomMazeButton.bind(this);
+    this.randomMaze = this.randomMaze.bind(this);
   }
 
   blankMaze() {
@@ -32,7 +34,35 @@ class Maze extends React.Component {
     return maze;
   }
 
+  randomMaze() {
+    let maze = this.blankMaze();
+    let coords = [];
+    while (coords.length < 50) {
+      let newCoord = [Math.floor(Math.random() * 17 + 1), Math.floor(Math.random() * 17 + 1)]
+      if (!this.includeCoords(coords, newCoord)) {
+        coords.push(newCoord);
+      }
+    }
+    coords.forEach(coord => {
+      maze[coord[0]][coord[1]] = 'wall';
+    });
+    return maze;
+  }
 
+  randomMazeButton(e) {
+    e.preventDefault();
+    this.setState({maze: this.randomMaze()});
+  }
+
+  includeCoords(array, coords) {
+    for (let i = 0; i < array.length; i++) {
+      let curr = array[i] 
+      if (curr[0] == coords[0] && curr[1] == coords[1]) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   handleClick(coords, e) {
     if (!this.state.solving && this.state.mouseDown &&  this.state.maze[coords[0]][coords[1]] === 'path') {
@@ -178,6 +208,7 @@ class Maze extends React.Component {
         <div className='button-div'>
           <button className='button' onClick={this.solveBfs} >Solve BFS</button>
           <button className='button' onClick={this.solveDfs} >Solve DFS</button>
+          <button className='button' onClick={this.randomMazeButton} >Random Maze</button>
           <button className='button' onClick={this.resetButton}>Reset</button>
         </div>
       </div>

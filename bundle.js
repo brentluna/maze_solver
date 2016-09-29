@@ -23570,6 +23570,8 @@
 	    _this.state = { unsolved: true, maze: _this.blankMaze(), mouseDown: false, solving: false };
 	    _this.mUp = _this.mUp.bind(_this);
 	    _this.mDown = _this.mDown.bind(_this);
+	    _this.randomMazeButton = _this.randomMazeButton.bind(_this);
+	    _this.randomMaze = _this.randomMaze.bind(_this);
 	    return _this;
 	  }
 	
@@ -23586,6 +23588,39 @@
 	      maze[0][0] = 'start';
 	      maze[19][19] = 'finish';
 	      return maze;
+	    }
+	  }, {
+	    key: 'randomMaze',
+	    value: function randomMaze() {
+	      var maze = this.blankMaze();
+	      var coords = [];
+	      while (coords.length < 50) {
+	        var newCoord = [Math.floor(Math.random() * 17 + 1), Math.floor(Math.random() * 17 + 1)];
+	        if (!this.includeCoords(coords, newCoord)) {
+	          coords.push(newCoord);
+	        }
+	      }
+	      coords.forEach(function (coord) {
+	        maze[coord[0]][coord[1]] = 'wall';
+	      });
+	      return maze;
+	    }
+	  }, {
+	    key: 'randomMazeButton',
+	    value: function randomMazeButton(e) {
+	      e.preventDefault();
+	      this.setState({ maze: this.randomMaze() });
+	    }
+	  }, {
+	    key: 'includeCoords',
+	    value: function includeCoords(array, coords) {
+	      for (var i = 0; i < array.length; i++) {
+	        var curr = array[i];
+	        if (curr[0] == coords[0] && curr[1] == coords[1]) {
+	          return true;
+	        }
+	      }
+	      return false;
 	    }
 	  }, {
 	    key: 'handleClick',
@@ -23752,6 +23787,11 @@
 	            'button',
 	            { className: 'button', onClick: this.solveDfs },
 	            'Solve DFS'
+	          ),
+	          _react2.default.createElement(
+	            'button',
+	            { className: 'button', onClick: this.randomMazeButton },
+	            'Random Maze'
 	          ),
 	          _react2.default.createElement(
 	            'button',
@@ -23940,7 +23980,6 @@
 	        var _path;
 	
 	        var parent = queue.shift();
-	        console.log(parent.pos);
 	        this.path.push(parent.pos);
 	        this.nodes.push(parent);
 	        if (parent.value === 'finish') {
