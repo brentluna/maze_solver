@@ -104,10 +104,12 @@ li {
 
 .button {
   background: #F7A278;
-  width: 130px;
+  width: 190px;
+  font-family: 'Press Start 2P', cursive;
   margin: 20px;
 	color: #351E29;
-  font-size: 18px;
+  
+  font-size: 14px;
 
 }
 

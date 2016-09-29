@@ -21542,7 +21542,7 @@
 	            _react2.default.createElement(
 	              'div',
 	              null,
-	              'Make maze walls by dragging mouse across cells. Choose wich algorithm you wish to solve it, an iterative Breadth First Search or recursive Depth First Search'
+	              'Make maze walls by dragging the mouse across cells or click \'Random Maze\' to have one generated for you. Choose wich algorithm you wish to solve it, an iterative Breadth First Search or recursive Depth First Search'
 	            ),
 	            _react2.default.createElement(
 	              'button',
@@ -23593,10 +23593,11 @@
 	    key: 'randomMaze',
 	    value: function randomMaze() {
 	      var maze = this.blankMaze();
+	      var invalidCoord = [[0, 0], [19, 19], [0, 1], [1, 0], [19, 18], [18, 19]];
 	      var coords = [];
-	      while (coords.length < 50) {
-	        var newCoord = [Math.floor(Math.random() * 17 + 1), Math.floor(Math.random() * 17 + 1)];
-	        if (!this.includeCoords(coords, newCoord)) {
+	      while (coords.length < 80) {
+	        var newCoord = [Math.floor(Math.random() * 20), Math.floor(Math.random() * 20)];
+	        if (!this.includeCoords(coords, newCoord) && !this.includeCoords(invalidCoord, newCoord)) {
 	          coords.push(newCoord);
 	        }
 	      }
@@ -23779,24 +23780,32 @@
 	          'div',
 	          { className: 'button-div' },
 	          _react2.default.createElement(
-	            'button',
-	            { className: 'button', onClick: this.solveBfs },
-	            'Solve BFS'
+	            'div',
+	            { className: 'left-buttons' },
+	            _react2.default.createElement(
+	              'button',
+	              { className: 'button', onClick: this.solveBfs },
+	              'Solve BFS'
+	            ),
+	            _react2.default.createElement(
+	              'button',
+	              { className: 'button', onClick: this.solveDfs },
+	              'Solve DFS'
+	            )
 	          ),
 	          _react2.default.createElement(
-	            'button',
-	            { className: 'button', onClick: this.solveDfs },
-	            'Solve DFS'
-	          ),
-	          _react2.default.createElement(
-	            'button',
-	            { className: 'button', onClick: this.randomMazeButton },
-	            'Random Maze'
-	          ),
-	          _react2.default.createElement(
-	            'button',
-	            { className: 'button', onClick: this.resetButton },
-	            'Reset'
+	            'div',
+	            { className: 'right-buttons' },
+	            _react2.default.createElement(
+	              'button',
+	              { className: 'button', onClick: this.randomMazeButton },
+	              'Random Maze'
+	            ),
+	            _react2.default.createElement(
+	              'button',
+	              { className: 'button', onClick: this.resetButton },
+	              'Reset'
+	            )
 	          )
 	        )
 	      );

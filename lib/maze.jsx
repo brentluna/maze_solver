@@ -36,10 +36,11 @@ class Maze extends React.Component {
 
   randomMaze() {
     let maze = this.blankMaze();
+    const invalidCoord = [[0, 0], [19, 19], [0, 1], [1,0], [19, 18], [18, 19]]
     let coords = [];
-    while (coords.length < 50) {
-      let newCoord = [Math.floor(Math.random() * 17 + 1), Math.floor(Math.random() * 17 + 1)]
-      if (!this.includeCoords(coords, newCoord)) {
+    while (coords.length < 80) {
+      let newCoord = [Math.floor(Math.random() * 20), Math.floor(Math.random() * 20)]
+      if (!this.includeCoords(coords, newCoord) && !this.includeCoords(invalidCoord, newCoord)) {
         coords.push(newCoord);
       }
     }
@@ -206,10 +207,14 @@ class Maze extends React.Component {
           {this.mapGrid()}
         </ul>
         <div className='button-div'>
-          <button className='button' onClick={this.solveBfs} >Solve BFS</button>
-          <button className='button' onClick={this.solveDfs} >Solve DFS</button>
-          <button className='button' onClick={this.randomMazeButton} >Random Maze</button>
-          <button className='button' onClick={this.resetButton}>Reset</button>
+          <div className='left-buttons'>
+            <button className='button' onClick={this.solveBfs} >Solve BFS</button>
+            <button className='button' onClick={this.solveDfs} >Solve DFS</button>
+          </div>
+          <div className='right-buttons'>
+            <button className='button' onClick={this.randomMazeButton} >Random Maze</button>
+            <button className='button' onClick={this.resetButton}>Reset</button>
+          </div>
         </div>
       </div>
     );
