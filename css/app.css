@@ -108,7 +108,7 @@ li {
   font-family: 'Press Start 2P', cursive;
   margin: 20px;
 	color: #351E29;
-  
+
   font-size: 14px;
 
 }
@@ -145,8 +145,7 @@ color: black;
 .footer {
   display: flex;
 justify-content: space-between;
-width: 900px;
-position: absolute;
+width: 700px;
 bottom: 0;
 border-top: 1px solid;
 
@@ -160,13 +159,17 @@ border-top: 1px solid;
 
 .main {
   padding-top: 40px;
-  width: 900px;
+  width: 700px;
   margin: 0 auto;
+  margin-top: 40px;
+  max-height: 720px;
   height: 96vh;
   background: #eee;
+  min-height: 700px;
 }
 
 .github-icon {
+  color: #A13D63; 
   font-size: 24px;
 }
 
